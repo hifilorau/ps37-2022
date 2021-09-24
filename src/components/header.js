@@ -25,7 +25,7 @@ const Header = ({ siteTitle }) => (
             textDecoration: `none`,
           }}
         >
-          For booking or to rent space contact ps37@gmail.com or drop us a dm on the insta @ps37durham
+          For booking or to rent space contact ps37durham@gmail.com or drop us a dm on the insta @ps37durham
         </Link>
       </h4>
     </div>
