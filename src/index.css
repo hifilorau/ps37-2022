@@ -25,6 +25,7 @@
   --pink: RGBA(253, 113, 198, 1.00);
   --green: RGBA(51, 255, 21, 1.00);
   --blue: RGBA(14, 217, 255, 1.00);
+  --purp: #6e0d60;
 }
 
 
@@ -51,8 +52,8 @@ h1 {
 
 .homepage-container {
   height: 100%;
-  background: black;
-  opacity: .6;
+  /* background: black; */
+  /* opacity: .6; */
 
 }
 
