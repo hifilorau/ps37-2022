@@ -13,6 +13,11 @@
   font-style: normal;
 }
 
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400&family=Press+Start+2P&display=swap');
+
+/* @import url('https://fonts.googleapis.com/css2?family=Palette+Mosaic&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;400&family=Palette+Mosaic&display=swap'); */
+
 :root {
   --section-width: 900px;
   --logo-font-light: 'Stellar-Light';
@@ -25,9 +30,7 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Oswald', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -37,10 +40,20 @@ code {
     monospace;
 }
 
+h1,h2,h3 {
+  /* font-family: 'Press Start 2P', cursive; */
+  color: #6e0d60;
+}
+
+h1 {
+  font-size: 28px;
+}
+
 .homepage-container {
-  height: 100vh;
+  height: 100%;
   background: black;
   opacity: .6;
+
 }
 
 .video {
@@ -55,7 +68,7 @@ z-index: -1
 
 .logo-wrapper {
   position: absolute;
-  max-width: 800px;
+  max-width: 570px;
   left: 50%;
   top: 50%;
   text-align: center;
@@ -66,7 +79,7 @@ z-index: -1
 
 .logo-landing {
   opacity: 1;
-  max-width: 350px;
+  max-width: 68%;
   margin-bottom: 1em;
 }
 
@@ -87,7 +100,7 @@ z-index: -1
 }
 
 .tagline {
-  color: white;
+  color: #333;
   position: relative;
   top: -10px;
   font-size: 2.65rem;

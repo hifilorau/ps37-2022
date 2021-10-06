@@ -1,7 +1,7 @@
 import React from 'react'
 import Video from '../../images/ps37-v2-comp-nl.mp4';
 import Poster from '../../images/ps37-moon-shot.png'
-import Logo from "../../images/ps37-logo-trees.png"
+import Logo from "../../images/ps37-key-05.png"
 
 
 const Home = () => {
@@ -17,6 +17,7 @@ const Home = () => {
   return (
   <div className="homepage-container">
     <div className="video-wrapper">
+      <div className="video-ol"></div>
       <video className="video" src={Video} autoPlay loop muted poster={Poster}/>
     </div>
     <div className="landing-content-container">
