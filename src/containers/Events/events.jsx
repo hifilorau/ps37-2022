@@ -2,6 +2,8 @@
 import React, {useEffect, useState} from 'react'
 import Video from '../../images/ps37-v2-comp-nl.mp4';
 import Poster from '../../images/ps37-moon-shot.png'
+import Zoom from 'react-medium-image-zoom'
+import 'react-medium-image-zoom/dist/styles.css'
 
 const EventCard = ({psEvent}) => {
   const {name, ticket_link, date} = psEvent.fields
@@ -9,9 +11,11 @@ const EventCard = ({psEvent}) => {
  
   return (
     <div className="event-card">
+      <Zoom>
       <div className="event-image">
         <img src={imgUrl} />
       </div>
+      </Zoom>
       <div>{name}</div>
       <div>{date}</div>
       <div><a className="event-link" target="_blank" href={ticket_link}>Buy Tix</a></div>
