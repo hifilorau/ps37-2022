@@ -1,10 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Big+Shoulders+Stencil+Display&display=swap');
+
 .future-content {
   position: absolute;
   z-index: 10;
-  top: 50%;
+  top: 60%;
   left: 50%;
   transform: translate(-50%, -50%);
   animation: fadein 9s;
+}
+
+.future-content h3 {
+  font-family: 'Big Shoulders Stencil Display', cursive;
+  font-size: 44px;
+  text-align:center;
 }
 
 @keyframes fadein {

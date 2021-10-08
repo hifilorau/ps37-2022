@@ -70,9 +70,9 @@ const Future = () => {
 		}  
 	
 		p5.noStroke();
-		p5.fill(150, 75, 0);
+		p5.fill(150, 75, 0, 215);
 		p5.triangle(0 - width/2, 0, 0 - width/2 + 250, -300, 0 - width/2 + 500, 0);
-		p5.fill(150, 120, 20);
+		p5.fill(150, 120, 20, 165);
     p5.triangle(width/4, 0, width/3, -200, width/2, 0);
 
     p5.pop()
@@ -102,7 +102,7 @@ const Future = () => {
     <div className="future">
       <Sketch setup={setup} draw={draw} preload={preload} />
       <div className="future-content">
-        <h3>Follow this path to the astral plane</h3>
+        <h3>Coming Soon to a Metaverse Near You</h3>
       </div>
     </div>
   )
