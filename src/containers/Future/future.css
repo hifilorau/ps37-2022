@@ -1,0 +1,14 @@
+.future-content {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: fadein 9s;
+}
+
+@keyframes fadein {
+  0% { opacity: 0; }
+  60% {opacity: 00 }
+  100%   { opacity: 1; }
+}
