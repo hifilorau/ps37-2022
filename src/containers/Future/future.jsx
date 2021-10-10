@@ -1,6 +1,6 @@
 import React from 'react'
 import Sketch from 'react-p5'
-import logo from '../../images/ps37_pyramid.png'
+import logo from '../../images/ps37-key-05.png'
 import './future.css'
 const Future = () => {
   
@@ -51,7 +51,8 @@ const Future = () => {
 		if (p5.imageTint == 255) {
 			p5.tint(255, 255);
 		}
-		p5.image(img, 0, 0-img.height/2.75, 570, 405);
+		p5.image(img, 0, 0-img.height/1.85);
+    img.resize(200,0)
 		p5.fill(222,222, 0);
 		if(sun>-301){
 			p5.circle(-300, sun=sun-1.4, sun1Width);
