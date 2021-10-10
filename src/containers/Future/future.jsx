@@ -10,6 +10,7 @@ const Future = () => {
   let green=0;
   let blue=0;
   let sun=400;
+  let sun1 = 400;
   let sun2=500
   let height, width;
   let img;
@@ -52,26 +53,33 @@ const Future = () => {
 			p5.tint(255, 255);
 		}
 		p5.image(img, 0, 0-img.height/1.85);
-    img.resize(200,0)
+    img.resize(150,0)
+    // p5.stroke(255, 100, 0);
 		p5.fill(222,222, 0);
-		if(sun>-301){
-			p5.circle(-300, sun=sun-1.4, sun1Width);
+		// if(sun>-301){
+		// 	p5.circle(-300, sun=sun-1.4, sun1Width);
+		// }
+		// else if(sun<=-301){
+		// 	p5.circle(-300, sun, sun1Width);
+		// }
+    if(sun1>=-20){
+			p5.circle(-300, sun1=sun1-1.4, sun1Width);
 		}
-		else if(sun<=-301){
-			p5.circle(-300, sun, sun1Width);
+		else if(sun1<=-20){
+			p5.circle(-300, -20, sun1Width);
 		}
 		//inner
 		p5.noStroke();
-		p5.fill(255, 100, 0, 100);
-		if(sun2>-350){
+		p5.fill(255, 100, 0, 145);
+		if(sun2>-300){
 			p5.circle(width/4, sun2=sun2 - 2.2, sun2Width);
 		}
-		else if(sun2<=-350){
+		else if(sun2<=-300){
 			p5.circle(width/4, sun2, sun2Width);
 		}  
 	
 		p5.noStroke();
-		p5.fill(150, 75, 0, 215);
+		p5.fill(150, 75, 0);
 		p5.triangle(0 - width/2, 0, 0 - width/2 + 250, -300, 0 - width/2 + 500, 0);
 		p5.fill(150, 120, 20, 165);
     p5.triangle(width/4, 0, width/3, -200, width/2, 0);
@@ -82,7 +90,7 @@ const Future = () => {
   const iterator = p5 => {
     for (var i = 0 ; i < width * 3; i += 12) {
     let hLineY = hLine + i;
-    p5.stroke(200, 80, 0);
+    p5.stroke('#83224f');
     p5.strokeWeight(.3);
     //vert line
   	p5.line(i - height, 0, i - height, height * height);
