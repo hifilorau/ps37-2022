@@ -9,7 +9,7 @@ import logo5 from '../../images/pyramid_outline_purp.png'
 
 import '../Future/future.css'
 const VaporPlanes = () => {
- const [gridLake, setGridLake] = useState(false)
+//  const [gridLake, setGridLake] = useState(false)
   var move;
 var hLine;
 
@@ -23,7 +23,7 @@ let sunColor;
 let lineColor;
 let mtnColors = [];
 let moonColors = [];
-
+let gridLake;
 let mtns = [];
 let moons = [];
 let img;
@@ -86,7 +86,7 @@ let THEME_ARRAY = [
 	  p5.imageMode(p5.CENTER);
     p5.rectMode(p5.CENTER)
     p5.pixelDensity(3)
-
+		gridLake = false;
     
     
 	//theming
@@ -351,13 +351,13 @@ function chooseIterator(pct, p5) {
 	if (gridLake == true) {
 		return;
 	} else {
-		let rC = realityCheck(pct, p5)
-		console.log('rc', rC)
-		if (rC == true) {
-			setGridLake(true)
-			console.log('GRID', gridLake)
-		return iterator(p5) 
-	} 	
+		  console.log('GRIDL2', gridLake)
+			let rC = realityCheck(pct, p5)
+			if (rC == true) {
+				gridLake = true;
+				console.log('GRID', gridLake)
+			return iterator(p5) 
+		} 	
 	}
 }
 
