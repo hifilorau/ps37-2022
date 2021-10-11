@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 
 import Sketch from 'react-p5'
 import logo1 from '../../images/key_purp_open.png'
@@ -9,7 +9,7 @@ import logo5 from '../../images/pyramid_outline_purp.png'
 
 import '../Future/future.css'
 const VaporPlanes = () => {
-  
+ const [gridLake, setGridLake] = useState(false)
   var move;
 var hLine;
 
@@ -76,6 +76,7 @@ let THEME_ARRAY = [
     img = images[Math.floor(p5.random(images.length))];
 
   }
+
   const setup = (p5, canvasParentRef) => {
     height = p5.windowHeight;
     width = p5.windowWidth;
@@ -192,7 +193,7 @@ let THEME_ARRAY = [
 
 class Sun {
 	constructor (sunColor, p5) {
-		this.circum = p5.random(195, 750)
+		this.circum = p5.random(145, 450)
 		this.vert =  p5.random(-1290, 150)
 		this.sunSpot = Math.floor( p5.random(2,4))
 		this.horiz = this.sunSpot < 3 ? p5.random(-1400,-400) :  p5.random(1400, 400)
@@ -210,7 +211,7 @@ class Sun {
 
 class Moon {
 	constructor (moonColors, p5) {
-		this.circum = p5.random(125, 400)
+		this.circum = p5.random(75, 220)
 		this.vert = p5.random(-1250, -100)
 		this.moonSpot = Math.floor(p5.random(2,4))
 		this.horiz = this.moonSpot < 3 ? p5.random(-1900,-500) : p5.random(900, 400)
@@ -252,7 +253,7 @@ function keyPressed(p5) {
 
 class Mtn {
 	constructor (mtnColors, i, p5) {
-		this.circum = p5.random(125, 450)
+		// this.circum = p5.random(125, 450)
 		this.vert = p5.random(-400, 100)
 		this.mtnSpot = Math.floor(p5.random(2,4))
 		this.mtnColors = mtnColors
@@ -260,9 +261,9 @@ class Mtn {
 		this.mtnColor = p5.color(this.mtnColors[this.colorIndex]);
 		// this.mtnColor.setAlpha(128 + 128 * sin(millis() / 1000));
 		this.mtnX = getX(i, p5)
-		this.mtnWidth = p5.random(500, 1200 )
+		this.mtnWidth = p5.random(250, 650 )
 		this.mtnX3 = this.mtnX + this.mtnWidth
-		this.mtnHeight = p5.random(300, 500) * -1;
+		this.mtnHeight = p5.random(150, 300) * -1;
 	}
   display(p5){
 		p5.noStroke()
@@ -279,7 +280,7 @@ class Mtn {
 	}
 }
 
-function invertMtnsCheck(p5){
+const invertMtnsCheck = (p5) => {
   let x = realityCheck(5, p5) ? p5.rotateY(180) : null
   return x
 }
@@ -337,13 +338,27 @@ function customDraw(p5, img) {
 	imageDecisions(p5, img)
   displayMtns(p5);
 	//error card iterator
-	p5.rotateX(-88)
-	// interator()
+	p5.rotateX(-87)
+	chooseIterator(5, p5)
 	p5.pop()
-	iterator(p5)
+	// iterator(p5)
+	chooseIterator(85, p5)
   
 
 // pop()
+}
+function chooseIterator(pct, p5) {
+	if (gridLake == true) {
+		return;
+	} else {
+		let rC = realityCheck(pct, p5)
+		console.log('rc', rC)
+		if (rC == true) {
+			setGridLake(true)
+			console.log('GRID', gridLake)
+		return iterator(p5) 
+	} 	
+	}
 }
 
 function flipItAll(p5) {
