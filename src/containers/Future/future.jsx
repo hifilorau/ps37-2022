@@ -111,7 +111,7 @@ const Future = () => {
     <div className="future">
       <Sketch setup={setup} draw={draw} preload={preload} />
       <div className="future-content">
-        <h3>Coming Soon to a Metaverse Near You</h3>
+        {/* <h3>Coming Soon to a Metaverse Near You</h3> */}
       </div>
     </div>
   )

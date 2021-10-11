@@ -6,6 +6,8 @@ import Header from './components/header.jsx'
 import Events from './containers/Events/events.jsx'
 import Future from './containers/Future/future.jsx'
 import Footer from './components/footer.jsx'
+import VaporPlanes from './containers/VaporPlanes/vaporPlanes.jsx'
+
 import {
   BrowserRouter as Router,
   Switch,
@@ -28,6 +30,9 @@ const App = () => {
           </Route>
           <Route path="/future">
             <Future />
+          </Route>
+          <Route path="/vaporplanes">
+            <VaporPlanes />
           </Route>
           <Route path="/">
             <Home />
