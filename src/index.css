@@ -46,6 +46,11 @@ h1,h2,h3 {
   color: #6e0d60;
 }
 
+img {
+  width: 100%;
+  height: auto;
+}
+
 h1 {
   font-size: 28px;
 }

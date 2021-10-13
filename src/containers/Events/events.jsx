@@ -4,6 +4,7 @@ import Video from '../../images/ps37-v2-comp-nl.mp4';
 import Poster from '../../images/ps37-moon-shot.png'
 import Zoom from 'react-medium-image-zoom'
 import 'react-medium-image-zoom/dist/styles.css'
+import Footer from '../../components/footer.jsx'
 
 const EventCard = ({psEvent}) => {
   const {name, ticket_link, date} = psEvent.fields
@@ -51,6 +52,7 @@ const Events = () => {
  }, []);
 
   return (
+    <div>
     <div className="event-page">
       <div className="video-wrapper">
       <div className="video-ol"></div>
@@ -60,6 +62,8 @@ const Events = () => {
       <div className="events-wrap">
           {psEvents && psEvents.map(psEvent =>  <EventCard key={psEvent.id} psEvent={psEvent}/> )}
       </div>
+    </div>
+    <Footer />
     </div>
   )
 }

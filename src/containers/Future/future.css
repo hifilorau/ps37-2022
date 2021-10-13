@@ -25,3 +25,59 @@
 .vaporplanes {
   z-index: 10000;
 }
+
+.vaporplanes h3 {
+  cursor: pointer;
+  padding: 1em;
+  background: rgba(0,0,0, .5);
+  transition: .5s;
+}
+
+.vaporplanes h3:hover {
+  color: orange;
+}
+
+.vp-content {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  right: 0;
+  /* transform: translate(-50%, -50%); */
+  animation: fadein 3s;
+}
+
+.nft-fo {
+  position: absolute;
+  z-index: 10;
+  top: 0;
+  width: 220px;
+  height: 400px;
+  background: rgba(0,0,0, .5);
+  color: white;
+  padding: 1em;
+}
+
+.close {
+  position: absolute;
+  z-index: 10;
+  top: 5px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.vapor-link {
+  background: rgba(0,0,0, .5);
+  cursor: pointer;
+  transition: .5s;
+}
+
+.vapor-link a {
+  width: 100%;
+}
+
+.vaporlink-img {
+  width: 70px;
+  height: auto;
+  margin: 0 auto;
+}
+

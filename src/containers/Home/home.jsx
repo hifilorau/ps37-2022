@@ -2,6 +2,8 @@ import React from 'react'
 import Video from '../../images/ps37-v2-comp-nl.mp4';
 import Poster from '../../images/ps37-moon-shot.png'
 import Logo from "../../images/ps37-key-05.png"
+import Footer from '../../components/footer.jsx'
+import {Link} from 'react-router-dom'
 
 
 const Home = () => {
@@ -15,6 +17,7 @@ const Home = () => {
 
 
   return (
+    <div>
   <div className="homepage-container">
     <div className="video-wrapper">
       <div className="video-ol"></div>
@@ -23,13 +26,15 @@ const Home = () => {
     <div className="landing-content-container">
 
       <div className="logo-wrapper">
-        <img className="logo-landing glitch" src={Logo}/>
+       <Link to="vaporplanes"> <img className="logo-landing glitch" src={Logo}/></Link>
         {/* { this.state.randomNumber == 3 ?  <div className="tagline">A Paradise in Space</div>  : null }  */}
         {/* { this.state.randomNumber !== 3 ? <div className="tagline">makerspace, office, and arthaüs</div> : null } */}
         <div className="tagline">makerspace, event venue, and arthaüs</div> 
       </div>
     </div>
   </div>
+  <Footer />
+    </div>
   )
 }
 
