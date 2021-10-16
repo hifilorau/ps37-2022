@@ -17,12 +17,11 @@ const [customSave, setCustomSave] = useState(null)
 const [info, setInfo] = useState(false)
   var move;
 var hLine;
-
+let attributes = {}
 let theme;
-let primaryColor;
 
 let sun;
-
+let isSun;
 let skyColor;
 let sunColor;
 let lineColor;
@@ -102,32 +101,46 @@ border-color: red;
     
 	//theming
 	const themeIndex = Math.floor(p5.random(THEME_ARRAY.length))
+	attributes.theme = setThemeAttribute(themeIndex);
   const theme = THEME_ARRAY[themeIndex]
-	console.log('theme', theme);
-	// primaryColor = theme[4];
-	primaryColor = theme[Math.floor(p5.random(theme.length))]
-	// lineColor = theme[0]
+	console.log('theme', attributes.theme);
+  const skyIndex = Math.floor(p5.random(theme.length))
+	skyColor = theme[skyIndex]
+	theme.splice(skyIndex, 1);
+
+
+	/// set up for sun
+	if (realityCheck(80,p5)) {
+		isSun = true;
+		let sunIndex = Math.floor(p5.random(theme.length))
+		sunColor = theme[sunIndex]
+		theme.splice(sunIndex, 1);
+		sun = new Sun(sunColor, p5);
+		attributes.sun = true;
+	}
+
+
 	lineColor = theme[Math.floor(p5.random(theme.length))]
 	// console.log('secondary', secondaryColor)
-	sunColor = theme[Math.floor(p5.random(theme.length))]
   starColor = theme[Math.floor(p5.random(theme.length))]
-	mtnColors.push(theme[2], theme[3])
-	moonColors.push(theme[3], theme[4])
-	
+	mtnColors.push(theme[0], theme[1])
+	moonColors.push(theme[1], theme[2])
+	console.log('MoonCOlors', moonColors)
 
   // move = 1;
   hLine=0;
 	p5.imageTint=255
-	sun = new Sun(primaryColor, p5);
+
 
 
 	// for scaling logo
 	img.resize(0, height/9) 
-  console.log('img in setup', img)
-  // 
-	p5.background(primaryColor);
+	p5.background(skyColor);
+
 	customDraw(p5, img)
+
 	setCustomSave(canvasParentRef)
+	console.log('ATTRIBUTES', attributes)
   }
 
 	const draw = (p5) => {
@@ -139,16 +152,22 @@ border-color: red;
 		// p5.translate(0,0,-10)
 
 		newSky(p5)
+
 		p5.push()
-		// p5.pop()
+		if (realityCheck(99, p5)) {
+			console.log('FLIING')
+			// p5.rotateX(180)
+		}
+
+		p5.rotateY(180)
 		createMoons(moonColors, p5)
 		createMtns(mtnColors, p5)
-		flipItAll(p5)
+
 		// p5.translate(-400, 0, -14, 0 ,0, 0);
 		// p5.translate(0, 0, -100)
 		// p5.perspective(p5.PI / 3.0, width / height, 0.1, 500);
 		// interator()
-		p5.camera(0, 0,1280, 0, 0, 0, 0, 1, 0);
+		p5.camera(0, 0,1640, 0, 0, 0, 0, 1, 0);
 		p5.plane(0, 0);
 		// p5.push()
 		// p5.rotateX(-88)
@@ -158,16 +177,17 @@ border-color: red;
 		// if (imageTint == 255) {
 		// 	tint(255, 255);
 		// }
-		sun.display(p5)
+		if (isSun) {
+			sun.display(p5)
+		}
+
 		displayMoons(p5)
-		console.log('IMG', img)
 		// displayMtns();
 		imageDecisions(p5, img)
 		displayMtns(p5);
 		//error card iterator
 		// p5.rotateX(-87)
 		iterator(50, p5)
-
 		// iterator(p5)
 		p5.pop()
 	// pop()
@@ -183,41 +203,51 @@ border-color: red;
     p5.strokeWeight(.3);
 		// p5.translate(0,0,100);
 		if (realityCheck(5, p5)) {
+			attributes.grid="horizontal"
 			p5.rotateX(88)
-			for (var x = 0; x < width; x += gridSize) {
-				for (var y = 0; y < height; y += gridSize ) {
+			for (var x = 0; x < width * 1.3; x += gridSize*4) {
+				for (var y = 0; y < height * 1.3; y += gridSize * 4 ) {
 	
-					p5.line(0-width/2, y  , width/2, y ) ;
+					p5.line(0-width * 1.3, y  , width * 1.3, y ) ;
 					// p5.line(x-width/2, 0, x-width/2, height * 2);
 				}
 			}
 		} else if (realityCheck(5, p5)) {
-
+			attributes.grid="vertical"
 			p5.rotateX(88)
 
 			for (var x = 0; x < width; x += gridSize ) {
 				for (var y = 0; y < height; y += gridSize ) {
 	
 					// p5.line(0-width/2, y * 2, width/2, y * 2  ) ;
-					p5.line(x-width/2, 0, x-width/2, height * 2);
+					p5.line(x-width * 1.3, 0, x-width * 1.3, height * 2);
 				}
 			}
 
-		} else {
-
+		} else if (realityCheck(75, p5)) {
+		
 			if (realityCheck(95, p5)) {
 				p5.rotateX(88)
+				attributes.grid="grid"
+		 } else {
+			attributes.grid="graph"
 		 }
 
 			for (var x = 0; x < width * 2; x += gridSize ) {
 				for (var y = 0; y < height * 2; y += gridSize ) {
 					// p5.circle(0-width/2, 0, 200, 200)
-					p5.line(0-width, y * 2, width, y * 2  ) ;
+					p5.line(0-width * 1.3, y * 2, width * 1.3, y * 2  ) ;
 					p5.line(x-width, 0, x-width, height * 2);
 				}
 			}
 
+		} else {
+			attributes.grid="none"
 		}
+
+
+
+
 		p5.pop()
     // if (hLine + move > height / 7 ) {
     //   hLine = -100;
@@ -249,10 +279,7 @@ function getX(i, p5) {
 
 
 
-function flipItAll(p5) {
-  let x = realityCheck(6, p5) ? p5.rotateY(180) : null; 
-  return x
-}
+
 
 function imageDecisions(p5, img) {
 	if (realityCheck(85, p5)) {
@@ -277,10 +304,10 @@ function realityCheck(percent, p5) {
 class Sun {
 	constructor (sunColor, p5) {
 		this.circum = p5.random(145, 450)
-		this.vert =  p5.random(-1290, 150)
+		this.vert =  p5.random(-height/2, 150)
 		this.sunSpot = Math.floor( p5.random(2,4))
-		this.horiz = this.sunSpot < 3 ? p5.random(-1400,-400) :  p5.random(1400, 400)
-		console.log("SUN H", this.horiz)
+		this.horiz = this.sunSpot < 3 ? p5.random(-width/2,-400) :  p5.random(width/2, 400)
+		console.log("SUN height, w", this.vert, this.horiz)
 		// this.horiz = random(-600,600)
 		this.color = p5.color(sunColor);
 		// this.color.setAlpha(128 + 128 * sin(millis() / 1000)); 
@@ -295,17 +322,17 @@ class Sun {
 class Moon {
 	constructor (moonColors, p5) {
 		this.circum = p5.random(75, 220)
-		this.vert = p5.random(-1250, -100)
+		this.vert = p5.random(-height/2, -100)
 		this.moonSpot = Math.floor(p5.random(2,4))
-		this.horiz = this.moonSpot < 3 ? p5.random(-1900,-500) : p5.random(900, 400)
+		this.horiz = this.moonSpot < 3 ? p5.random(-width/2,-400) : p5.random(width/2, 400)
 		this.moonColors = moonColors
-		this.colorIndex = Math.floor(p5.random(0,2))
-		this.moonColor = p5.color(this.moonColors[this.colorIndex]);
+		console.log('MOON height', this.vert)
+
+		this.moonColor = p5.random(moonColors)
 		// this.moonColor.setAlpha(128 + 128 * sin(millis() / 1000));
 	}
   display(p5){
 		p5.noStroke()
-	
 		p5.fill(this.moonColor);
 		p5.circle(this.horiz, this.vert, this.circum);
 	}
@@ -313,6 +340,7 @@ class Moon {
 
 function createMoons (theme, p5) {
 	let moonNumber = Math.floor(p5.random(0,3));
+	attributes.moons = moonNumber;
 	for (let i=0; i < moonNumber; i++) {
 		let newMoon = new Moon(theme, p5);
 		moons.push(newMoon)
@@ -363,7 +391,7 @@ const invertMtnsCheck = (p5) => {
 
 function createMtns (theme, p5) {
 	let mtnNumber = Math.floor(p5.random(0,5));
-	// mtnNumber = 1;
+	attributes.mountains = mtnNumber;
 	for (let i=0; i < mtnNumber; i++) {
 		let newMtn = new Mtn(theme, i, p5);
 		mtns.push(newMtn)
@@ -403,15 +431,11 @@ function newSky(p5) {
 	p5.translate(0,0,-1280)
   // p5.strokeWeight(25 / 15);
    let chooseSky = p5.int(p5.random(0,9))
-	//  chooseSky=1;
-  // p5.randomSeed(actRandomSeed);
 
-  // tileCount = 25
-	// p5.push()
-	///MATRIX SKY
 	p5.fill(starColor)
 	p5.noStroke()
 	if (chooseSky == 0) {
+		attributes.sky="matrix"
 		for (var i = 0; i < width*3 ; i+=30) {
 			for (var j = 0; j < height*1.5 ; j+= 15) {
 				if (realityCheck(25, p5)) {
@@ -421,6 +445,7 @@ function newSky(p5) {
 		}
 	} 
 	if (chooseSky == 1) {
+		attributes.sky="stars"
 		for (var i = 0; i < 2000 ; i+=1) {
 		p5.ellipse(p5.random(-width*1.5, width*1.5),p5.random(-height*1.5), 5, 5 )
 		}
@@ -431,9 +456,32 @@ function newSky(p5) {
 
 }
 
-
-
-
+const setThemeAttribute = (i) => {
+	if (i = 0) {
+		return "X"
+	}
+	if (i = 1) {
+		return "Y"
+	}
+	if (i = 2) {
+		return "Z"
+	}
+	if (i = 3) {
+		return "XY"
+	}
+	if (i = 4) {
+		return "ZX"
+	}
+	if (i = 5) {
+		return "ZX"
+	}
+	if (i = 6) {
+		return "ZX"
+	}
+	if (i = 7) {
+		return "ZX"
+	}
+}
 
   return (
     <div id='canvas-parent' className="future vaporplanes">
