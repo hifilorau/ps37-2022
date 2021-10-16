@@ -202,7 +202,7 @@ border-color: red;
 		p5.stroke(lineColor);
     p5.strokeWeight(.3);
 		// p5.translate(0,0,100);
-		if (realityCheck(5, p5)) {
+		if (realityCheck(10, p5)) {
 			attributes.grid="horizontal"
 			p5.rotateX(88)
 			for (var x = 0; x < width * 1.3; x += gridSize*4) {
@@ -212,7 +212,7 @@ border-color: red;
 					// p5.line(x-width/2, 0, x-width/2, height * 2);
 				}
 			}
-		} else if (realityCheck(5, p5)) {
+		} else if (realityCheck(10, p5)) {
 			attributes.grid="vertical"
 			p5.rotateX(88)
 
@@ -224,7 +224,7 @@ border-color: red;
 				}
 			}
 
-		} else if (realityCheck(75, p5)) {
+		} else if (realityCheck(60, p5)) {
 		
 			if (realityCheck(95, p5)) {
 				p5.rotateX(88)
