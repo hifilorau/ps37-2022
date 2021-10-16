@@ -8,6 +8,7 @@ import logo4 from '../../images/key_solid_purp.png'
 import logo5 from '../../images/pyramid_outline_purp.png'
 import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
+import GridLoader from 'react-spinners/GridLoader'
 
 import '../Future/future.css'
 const VaporPlanes = () => {
@@ -28,6 +29,7 @@ let lineColor;
 let mtnColors = [];
 let moonColors = [];
 let gridLake;
+let starColor;
 let mtns = [];
 let moons = [];
 let img;
@@ -65,6 +67,12 @@ let THEME_ARRAY = [
 	["#c75001", "#d43acc", "#de689f", "#e79771","#fbf017", "#f1c344"]
 ]
 
+const override = `
+display: block;
+margin: 0 auto;
+border-color: red;
+`;
+
 
   const preload = (p5) => {
     img1 = p5.loadImage(logo1);
@@ -75,8 +83,6 @@ let THEME_ARRAY = [
     // img5 = null;
   
     images = [img1, img2, img3, img4, img5];
-    // img = random(2,4) < 3 ? img1 : img2;
-    // img = realityCheck(50) ? img1 : img2;
     img = images[Math.floor(p5.random(images.length))];
 
   }
@@ -84,19 +90,15 @@ let THEME_ARRAY = [
   const setup = (p5, canvasParentRef) => {
 		height=1080;
 		width=1920;
-
-		// width = 3840;
-		// height = 2160;
-    // height = p5.windowHeight;
-    // width = p5.windowWidth;
     console.log('HEIGHT', height, 'weidth', width)
     p5.createCanvas(width, height, p5.WEBGL).parent(canvasParentRef)
     p5.angleMode(p5.DEGREES)
 	  p5.imageMode(p5.CENTER);
     p5.rectMode(p5.CENTER)
-    p5.pixelDensity(3)
+    // p5.pixelDensity(3)
 		gridLake = false;
-    
+		p5.colorMode(p5.HSB, 360, 100, 100, 100);
+
     
 	//theming
 	const themeIndex = Math.floor(p5.random(THEME_ARRAY.length))
@@ -108,7 +110,7 @@ let THEME_ARRAY = [
 	lineColor = theme[Math.floor(p5.random(theme.length))]
 	// console.log('secondary', secondaryColor)
 	sunColor = theme[Math.floor(p5.random(theme.length))]
-  
+  starColor = theme[Math.floor(p5.random(theme.length))]
 	mtnColors.push(theme[2], theme[3])
 	moonColors.push(theme[3], theme[4])
 	
@@ -123,7 +125,7 @@ let THEME_ARRAY = [
 	img.resize(0, height/9) 
   console.log('img in setup', img)
   // 
-
+	p5.background(primaryColor);
 	customDraw(p5, img)
 	setCustomSave(canvasParentRef)
   }
@@ -133,12 +135,14 @@ let THEME_ARRAY = [
 	}
 
 	const  customDraw = (p5, img) => {
-		p5.background(primaryColor);
+		// p5.push()
+		// p5.translate(0,0,-10)
+
+		newSky(p5)
+		p5.push()
+		// p5.pop()
 		createMoons(moonColors, p5)
 		createMtns(mtnColors, p5)
-		// p5.camera(0, 0, (height/4) / p5.tan(p5.PI/6), 0, 0, -45, 0, 1, 0);
-		// p5.rotateX(89);
-		// realityCheck(4, p5) ? p5.rotateY(180) : null; 
 		flipItAll(p5)
 		// p5.translate(-400, 0, -14, 0 ,0, 0);
 		// p5.translate(0, 0, -100)
@@ -146,7 +150,7 @@ let THEME_ARRAY = [
 		// interator()
 		p5.camera(0, 0,1280, 0, 0, 0, 0, 1, 0);
 		p5.plane(0, 0);
-		p5.push()
+		// p5.push()
 		// p5.rotateX(-88)
 		p5.tint(255, p5.imageTint+= .25);
 
@@ -163,7 +167,7 @@ let THEME_ARRAY = [
 		//error card iterator
 		// p5.rotateX(-87)
 		iterator(50, p5)
-	
+
 		// iterator(p5)
 		p5.pop()
 	// pop()
@@ -177,31 +181,44 @@ let THEME_ARRAY = [
 		p5.push()
 		p5.stroke(lineColor);
     p5.strokeWeight(.3);
-		
-		if (realityCheck(10, p5)) {
+		// p5.translate(0,0,100);
+		if (realityCheck(5, p5)) {
 			p5.rotateX(88)
-			for (var x = 0; x < width; x += gridSize *1.2) {
+			for (var x = 0; x < width; x += gridSize) {
 				for (var y = 0; y < height; y += gridSize ) {
 	
 					p5.line(0-width/2, y  , width/2, y ) ;
 					// p5.line(x-width/2, 0, x-width/2, height * 2);
 				}
 			}
-		} else {
+		} else if (realityCheck(5, p5)) {
 
 			p5.rotateX(88)
-	
-			for (var x = 0; x < width; x += gridSize *1.2) {
+
+			for (var x = 0; x < width; x += gridSize ) {
 				for (var y = 0; y < height; y += gridSize ) {
 	
-					p5.line(0-width/2, y * 2, width/2, y *2) ;
+					// p5.line(0-width/2, y * 2, width/2, y * 2  ) ;
 					p5.line(x-width/2, 0, x-width/2, height * 2);
 				}
 			}
 
+		} else {
+
+			if (realityCheck(95, p5)) {
+				p5.rotateX(88)
+		 }
+
+			for (var x = 0; x < width * 2; x += gridSize ) {
+				for (var y = 0; y < height * 2; y += gridSize ) {
+					// p5.circle(0-width/2, 0, 200, 200)
+					p5.line(0-width, y * 2, width, y * 2  ) ;
+					p5.line(x-width, 0, x-width, height * 2);
+				}
+			}
+
 		}
-
-
+		p5.pop()
     // if (hLine + move > height / 7 ) {
     //   hLine = -100;
     // } else {
@@ -209,7 +226,6 @@ let THEME_ARRAY = [
     // }
     // move += .01;
   // }
-	p5.pop()
 }
 
 
@@ -254,20 +270,6 @@ function realityCheck(percent, p5) {
 	const check = p5.random(0,100);
 	return percent > check ? true : false
 }
-
-function createSky (p5) {
-	let skyHeight = height/2;
-	p5.fill('#000');
-	let skyY = 0
-	// console.log(skyY, 'SKYY')
-	for (let i=0; i < skyHeight; i+=13) {
-	// console.log('i sky', i)
-	p5.stroke('#000')
-	p5.strokeWeight(3);
-	p5.line(0-width, skyY - i, width, skyY - i);
-	}
-}
-
 
 
 
@@ -355,12 +357,12 @@ class Mtn {
 }
 
 const invertMtnsCheck = (p5) => {
-  let x = realityCheck(15, p5) ? p5.rotateX(180) : null
+  let x = realityCheck(25, p5) ? p5.rotateX(180) : null
   return x
 }
 
 function createMtns (theme, p5) {
-	let mtnNumber = Math.floor(p5.random(0,4));
+	let mtnNumber = Math.floor(p5.random(0,5));
 	// mtnNumber = 1;
 	for (let i=0; i < mtnNumber; i++) {
 		let newMtn = new Mtn(theme, i, p5);
@@ -374,10 +376,6 @@ function displayMtns(p5) {
 		mtns[i].display(p5)
 	}
 }
-
-
-
-
 
 
 
@@ -399,13 +397,57 @@ const saveMe = (e, p5) => {
  const dataUrl = canvas.toDataURL();
  setInfo(true)
  console.log(dataUrl)
+}
 
+function newSky(p5) {
+	p5.translate(0,0,-1280)
+  // p5.strokeWeight(25 / 15);
+   let chooseSky = p5.int(p5.random(0,9))
+	//  chooseSky=1;
+  // p5.randomSeed(actRandomSeed);
+
+  // tileCount = 25
+	// p5.push()
+	///MATRIX SKY
+	p5.fill(starColor)
+	p5.noStroke()
+	if (chooseSky == 0) {
+		for (var i = 0; i < width*3 ; i+=30) {
+			for (var j = 0; j < height*1.5 ; j+= 15) {
+				if (realityCheck(25, p5)) {
+					p5.ellipse(i-width*1.5, j-height*1.5, 7, 7)
+				}
+			}
+		}
+	} 
+	if (chooseSky == 1) {
+		for (var i = 0; i < 2000 ; i+=1) {
+		p5.ellipse(p5.random(-width*1.5, width*1.5),p5.random(-height*1.5), 5, 5 )
+		}
+	}
+	else {
+		return 
+	}
 
 }
 
+
+
+
+
   return (
     <div id='canvas-parent' className="future vaporplanes">
-     <Sketch setup={setup}  preload={preload} keyPressed={keyPressed} draw={draw}/> 
+     <div className="sketch-wrapper">
+			<Sketch setup={setup}  preload={preload} keyPressed={keyPressed} draw={draw}/>
+		 </div>
+		 <div className="vapor-loading">
+		 	<GridLoader color={'#6e0d60'} isLoading={true}
+      	css={override} size={40} />
+			 	
+				 
+				 <h4>What took a god 7 days..</h4>
+			 	<p>creating new plane</p>
+			 </div> 
       <div className="vp-content">
         <h3 onClick={resetFrame}>Create New Plane</h3>
 				<h3 onClick={(e, p5) => saveMe(e, p5)}> Mint as NFT (coming soon)</h3>
@@ -417,7 +459,7 @@ const saveMe = (e, p5) => {
       </div>
 			{info && <div className="nft-fo">
 				<div className="close" onClick={() => setInfo(false)}>X</div>
-				<p>Each vapor plane is randomly generated. There are billions of possible and unpredictable combinaations. The idea is that you can create as many new planes as you like and that once you find one that you like you can Mint it as an NFT. The final collection of 1000 will be the 1200 that our users have decided to mint. Each NFT will also be serialized. Holders of NFTs will be eligible for future Airdrops, NFT tickets to IRL or metaverse events, as well as merch.</p>
+				<p>Each vapor plane is randomly generated. There are billions of possible and unpredictable combinaations. The idea is that a user can create as many new planes as they like and once they find one that they like they can mint it as an NFT. The final collection will be the 1200 that users have decided to mint. Each NFT minted will also be serialized. Holders of vapor planes will be eligible for a variety of benefits related to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise and physical art.</p>
 			</div> }
     </div>
   )
