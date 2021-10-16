@@ -134,7 +134,7 @@ border-color: red;
 
 
 	// for scaling logo
-	img.resize(0, height/9) 
+	img.resize(0, height/7) 
 	p5.background(skyColor);
 
 	customDraw(p5, img)
