@@ -215,16 +215,20 @@ border-color: red;
 		} else if (realityCheck(10, p5)) {
 			attributes.grid="vertical"
 			p5.rotateX(88)
-
-			for (var x = 0; x < width; x += gridSize ) {
+      let modifier = p5.int(p5.random(1, 4))
+			console.log('modifer', modifier)
+			if (modifier == 2) {
+				attributes.grid = "vertical abstract"
+			}
+			for (var x = 0; x < width * modifier; x += gridSize ) {
 				for (var y = 0; y < height; y += gridSize ) {
 	
 					// p5.line(0-width/2, y * 2, width/2, y * 2  ) ;
-					p5.line(x-width * 1.3, 0, x-width * 1.3, height * 2);
+					p5.line(x-width, 0, x-width, height * 2);
 				}
 			}
 
-		} else if (realityCheck(60, p5)) {
+		} else if (realityCheck(70, p5)) {
 		
 			if (realityCheck(95, p5)) {
 				p5.rotateX(88)
