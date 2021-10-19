@@ -106,7 +106,8 @@ useEffect(() => {
     p5.pixelDensity(3)
 		gridLake = false;
 		p5.colorMode(p5.HSB, 360, 100, 100, 100);
-
+		// p5.camera(0,0,-.1)
+	
     
 	//theming
 	const themeIndex = Math.floor(p5.random(THEME_ARRAY.length))
@@ -210,6 +211,7 @@ useEffect(() => {
     // let hLineY = hLine + i;
 		let gridSize = 12
 		p5.push()
+		p5.translate(0,0,200)
 		p5.stroke(lineColor);
     p5.strokeWeight(.3);
 		// p5.translate(0,0,100);
