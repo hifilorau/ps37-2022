@@ -7,6 +7,8 @@ import Events from './containers/Events/events.jsx'
 import Future from './containers/Future/future.jsx'
 import Footer from './components/footer.jsx'
 import VaporPlanes from './containers/VaporPlanes/vaporPlanes.jsx'
+import { Web3ReactProvider } from '@web3-react/core'
+import { Web3Provider } from '@ethersproject/providers'
 
 import {
   BrowserRouter as Router,
@@ -15,34 +17,39 @@ import {
   Link
 } from "react-router-dom";
 
+const getLibrary = (provider, connector) => {
+  return new Web3Provider(provider)
+}
+
 const App = () => {
-  
   return (
-    <Router>
-      <div className="ps37-app">
-     {/* <Header /> */}
-     <Switch>
-          <Route path="/events">
-            <Events />
-          </Route>
-          <Route path="/info">
-            <Info />
-          </Route>
-          <Route path="/future">
-            <Future />
-          </Route>
-          <Route path="/vaporplanes">
-            <VaporPlanes />
-          </Route>
-          <Route path="/">
-            <Home />
-          </Route>
+    <Web3ReactProvider getLibrary={getLibrary}>
+      <Router>
+        <div className="ps37-app">
+      {/* <Header /> */}
+      <Switch>
+            <Route path="/events">
+              <Events />
+            </Route>
+            <Route path="/info">
+              <Info />
+            </Route>
+            <Route path="/future">
+              <Future />
+            </Route>
+            <Route path="/vaporplanes">
+              <VaporPlanes />
+            </Route>
+            <Route path="/">
+              <Home />
+            </Route>
+          
         
-       
-        </Switch>
-        {/* <Footer /> */}
-        </div>
-    </Router>
+          </Switch>
+          {/* <Footer /> */}
+          </div>
+      </Router>
+    </Web3ReactProvider>
   );
 }
 

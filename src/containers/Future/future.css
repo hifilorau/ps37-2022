@@ -106,8 +106,15 @@
     right: 0;
     bottom: 0;
     left: 0;
-    background-color: black;
+    /* background-color:none; */
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
+.react-p5 canvas {
+  /* object-fit: contain;
+  max-height: 100%;
+  max-width: 100%; */
+}
+

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 
 import Sketch from 'react-p5'
 import logo1 from '../../images/key_purp_open.png'
@@ -9,10 +9,13 @@ import logo5 from '../../images/pyramid_outline_purp.png'
 import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
 import GridLoader from 'react-spinners/GridLoader'
-
+import { Web3ReactProvider, useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import '../Future/future.css'
 const VaporPlanes = () => {
+const context = useWeb3React()
+const { connector, library, chainId, account, activate, deactivate, active, error } = context
 //  const [gridLake, setGridLake] = useState(false)
+const [activatingConnector, setActivatingConnector] = useState()
 const [customSave, setCustomSave] = useState(null)
 const [info, setInfo] = useState(false)
   var move;
@@ -72,6 +75,12 @@ margin: 0 auto;
 border-color: red;
 `;
 
+useEffect(() => {
+	if (activatingConnector && activatingConnector === connector) {
+		setActivatingConnector(undefined)
+	}
+}, [activatingConnector, connector])
+
 
   const preload = (p5) => {
     img1 = p5.loadImage(logo1);
@@ -94,7 +103,7 @@ border-color: red;
     p5.angleMode(p5.DEGREES)
 	  p5.imageMode(p5.CENTER);
     p5.rectMode(p5.CENTER)
-    // p5.pixelDensity(3)
+    p5.pixelDensity(3)
 		gridLake = false;
 		p5.colorMode(p5.HSB, 360, 100, 100, 100);
 
@@ -134,7 +143,8 @@ border-color: red;
 
 
 	// for scaling logo
-	img.resize(0, height/7) 
+	// p5.rotateY(180)
+	img.resize(0, height/6) 
 	p5.background(skyColor);
 
 	customDraw(p5, img)
@@ -159,7 +169,8 @@ border-color: red;
 			// p5.rotateX(180)
 		}
 
-		p5.rotateY(180)
+		// 
+		
 		createMoons(moonColors, p5)
 		createMtns(mtnColors, p5)
 
@@ -167,8 +178,8 @@ border-color: red;
 		// p5.translate(0, 0, -100)
 		// p5.perspective(p5.PI / 3.0, width / height, 0.1, 500);
 		// interator()
-		p5.camera(0, 0,1640, 0, 0, 0, 0, 1, 0);
-		p5.plane(0, 0);
+		// p5.camera(0, 0,1640, 0, 0, 0, 0, 1, 0);
+		// p5.plane(0, 0);
 		// p5.push()
 		// p5.rotateX(-88)
 		p5.tint(255, p5.imageTint+= .25);
@@ -197,14 +208,14 @@ border-color: red;
   const iterator = (pct, p5) => {
     // for (var i = 0 ; i < width * 3; i += 22) {
     // let hLineY = hLine + i;
-		let gridSize = 14
+		let gridSize = 12
 		p5.push()
 		p5.stroke(lineColor);
     p5.strokeWeight(.3);
 		// p5.translate(0,0,100);
 		if (realityCheck(10, p5)) {
 			attributes.grid="horizontal"
-			p5.rotateX(88)
+			p5.rotateX(89)
 			for (var x = 0; x < width * 1.3; x += gridSize*4) {
 				for (var y = 0; y < height * 1.3; y += gridSize * 4 ) {
 	
@@ -214,7 +225,7 @@ border-color: red;
 			}
 		} else if (realityCheck(10, p5)) {
 			attributes.grid="vertical"
-			p5.rotateX(88)
+			p5.rotateX(89)
       let modifier = p5.int(p5.random(1, 4))
 			console.log('modifer', modifier)
 			if (modifier == 2) {
@@ -224,14 +235,14 @@ border-color: red;
 				for (var y = 0; y < height; y += gridSize ) {
 	
 					// p5.line(0-width/2, y * 2, width/2, y * 2  ) ;
-					p5.line(x-width, 0, x-width, height * 2);
+					p5.line(x-width, 0, x-width, height* 2);
 				}
 			}
 
-		} else if (realityCheck(70, p5)) {
+		} else if (realityCheck(60, p5)) {
 		
 			if (realityCheck(95, p5)) {
-				p5.rotateX(88)
+				p5.rotateX(89)
 				attributes.grid="grid"
 		 } else {
 			attributes.grid="graph"
@@ -269,20 +280,14 @@ border-color: red;
 function getX(i, p5) {
 	let x;
 	if (i%2 == 0 ) {
-		x = p5.random(100, 800)
+		x = p5.random(100, width/2)
 		return x
 	}	else {
-		x =p5.random(-1000, -100)
-		x = -1500;
+		x =p5.random(-width/2, -450)
+		// x = -1500;
 		return x
-	}
-	// return x
+	}	// return x
 }
-
-
-
-
-
 
 
 function imageDecisions(p5, img) {
@@ -301,8 +306,6 @@ function realityCheck(percent, p5) {
 	const check = p5.random(0,100);
 	return percent > check ? true : false
 }
-
-
 
 
 class Sun {
