@@ -165,7 +165,7 @@ useEffect(() => {
 
 		p5.push()
 		newSky(p5)
-		if (realityCheck(10, p5)) {
+		if (realityCheck(25, p5)) {
 			console.log('FLIING')
 			attributes.inverted = true;
 			p5.rotateZ(180);
