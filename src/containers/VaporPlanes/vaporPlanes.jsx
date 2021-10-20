@@ -98,22 +98,20 @@ useEffect(() => {
   const setup = (p5, canvasParentRef) => {
 		height=1080;
 		width=1920;
-    console.log('HEIGHT', height, 'weidth', width)
     p5.createCanvas(width, height, p5.WEBGL).parent(canvasParentRef)
     p5.angleMode(p5.DEGREES)
 	  p5.imageMode(p5.CENTER);
     p5.rectMode(p5.CENTER)
-    p5.pixelDensity(3)
+    // p5.pixelDensity(3)
 		gridLake = false;
 		p5.colorMode(p5.HSB, 360, 100, 100, 100);
-		// p5.camera(0,0,-.1)
+		// p5.perspective(90, width/height, -10000, 0)
 	
     
 	//theming
 	const themeIndex = Math.floor(p5.random(THEME_ARRAY.length))
 	attributes.theme = setThemeAttribute(themeIndex);
   const theme = THEME_ARRAY[themeIndex]
-	console.log('theme', attributes.theme);
   const skyIndex = Math.floor(p5.random(theme.length))
 	skyColor = theme[skyIndex]
 	theme.splice(skyIndex, 1);
@@ -143,11 +141,11 @@ useEffect(() => {
 
 
 
+
 	// for scaling logo
 	// p5.rotateY(180)
 	img.resize(0, height/6) 
 	p5.background(skyColor);
-
 	customDraw(p5, img)
 
 	setCustomSave(canvasParentRef)
@@ -159,14 +157,18 @@ useEffect(() => {
 	}
 
 	const  customDraw = (p5, img) => {
+
 		// p5.push()
 		// p5.translate(0,0,-10)
 
-		newSky(p5)
+
 
 		p5.push()
-		if (realityCheck(99, p5)) {
+		newSky(p5)
+		if (realityCheck(10, p5)) {
 			console.log('FLIING')
+			attributes.inverted = true;
+			p5.rotateZ(180);
 			// p5.rotateX(180)
 		}
 
@@ -175,20 +177,8 @@ useEffect(() => {
 		createMoons(moonColors, p5)
 		createMtns(mtnColors, p5)
 
-		// p5.translate(-400, 0, -14, 0 ,0, 0);
-		// p5.translate(0, 0, -100)
-		// p5.perspective(p5.PI / 3.0, width / height, 0.1, 500);
-		// interator()
-		// p5.camera(0, 0,1640, 0, 0, 0, 0, 1, 0);
-		// p5.plane(0, 0);
-		// p5.push()
-		// p5.rotateX(-88)
 		p5.tint(255, p5.imageTint+= .25);
 
-		// createSky();
-		// if (imageTint == 255) {
-		// 	tint(255, 255);
-		// }
 		if (isSun) {
 			sun.display(p5)
 		}
@@ -209,9 +199,9 @@ useEffect(() => {
   const iterator = (pct, p5) => {
     // for (var i = 0 ; i < width * 3; i += 22) {
     // let hLineY = hLine + i;
-		let gridSize = 12
+		let gridSize = 13
+		// p5.camera(0,0,.1, 0, 0, -.1, 0, 1, 0);
 		p5.push()
-		p5.translate(0,0,200)
 		p5.stroke(lineColor);
     p5.strokeWeight(.3);
 		// p5.translate(0,0,100);
@@ -227,7 +217,7 @@ useEffect(() => {
 			}
 		} else if (realityCheck(10, p5)) {
 			attributes.grid="vertical"
-			p5.rotateX(89)
+			p5.rotateX(88.5)
       let modifier = p5.int(p5.random(1, 4))
 			console.log('modifer', modifier)
 			if (modifier == 2) {
@@ -244,7 +234,7 @@ useEffect(() => {
 		} else if (realityCheck(60, p5)) {
 		
 			if (realityCheck(95, p5)) {
-				p5.rotateX(89)
+				p5.rotateX(88.5)
 				attributes.grid="grid"
 		 } else {
 			attributes.grid="graph"
