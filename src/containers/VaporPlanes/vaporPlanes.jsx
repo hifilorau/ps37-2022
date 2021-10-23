@@ -139,7 +139,7 @@ useEffect(() => {
 
   // move = 1;
   hLine=0;
-	p5.imageTint=255
+	p5.imageTint=p5.random(255);
 
 
 
