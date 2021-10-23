@@ -10,19 +10,29 @@ import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
 import GridLoader from 'react-spinners/GridLoader'
 import { Web3ReactProvider, useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
+import { create } from 'ipfs-http-client'
 import '../Future/future.css'
+
+const client = create('https://ipfs.infura.io:5001/api/v0')
+const contractAddress = "0x90fa9714C8e7961F8D703A0a7085D5F29F269c23"
 const VaporPlanes = () => {
 const context = useWeb3React()
 const { connector, library, chainId, account, activate, deactivate, active, error } = context
 //  const [gridLake, setGridLake] = useState(false)
+
+
+
+///STATE ITEMS 
 const [activatingConnector, setActivatingConnector] = useState()
+const [nftAttributes, setNftAttributes] = useState({})
+const [fileUrl, updateFileUrl] = useState(``)
 const [customSave, setCustomSave] = useState(null)
 const [info, setInfo] = useState(false)
-  var move;
+
+
+///INITIALIZE VARIABLES
 var hLine;
 let attributes = {}
-let theme;
-
 let sun;
 let isSun;
 let skyColor;
@@ -151,6 +161,9 @@ useEffect(() => {
 	customDraw(p5, img)
 
 	setCustomSave(canvasParentRef)
+	// const thePlane = p5.get()
+
+	// thePlane.save()
 	console.log('ATTRIBUTES', attributes)
   }
 
@@ -200,6 +213,7 @@ useEffect(() => {
 		p5.pop()
 		// iterator(p5)
 		p5.pop()
+		setNftAttributes(attributes)
 	// pop()
 	}
   
@@ -427,13 +441,6 @@ const  resetFrame = (p5) => {
 	window.location.reload(false);
 }
 
-const saveMe = (e, p5) => {
- console.log('save', customSave)
- const canvas = document.querySelector('canvas')
- const dataUrl = canvas.toDataURL();
- setInfo(true)
- console.log(dataUrl)
-}
 
 function newSky(p5) {
 	p5.translate(0,0,-1280)
@@ -464,6 +471,7 @@ function newSky(p5) {
 
 }
 
+
 const setThemeAttribute = (i) => {
 	if (i = 0) {
 		return "X"
@@ -490,6 +498,75 @@ const setThemeAttribute = (i) => {
 		return "ZX"
 	}
 }
+
+
+//// SAVE STUFF
+const blobToFile = (theBlob, fileName) => {
+	theBlob.lastModifiedDate = new Date();
+	theBlob.name = fileName;
+	return theBlob;
+};
+
+const b64toBlob = (dataURI) => {
+	const byteString = atob(dataURI.split(',')[1]);
+	const ab = new ArrayBuffer(byteString.length);
+	const ia = new Uint8Array(ab);
+	
+	for (let i = 0; i < byteString.length; i++) {
+			ia[i] = byteString.charCodeAt(i);
+	}
+	return new Blob([ab], { type: 'image/jpeg' });
+}
+
+
+const saveMe = async (p5) => {
+	console.log('save', nftAttributes)
+	const id = 1;
+	const canvas = document.querySelector('canvas')
+	const dataUrl = canvas.toDataURL("img/png");
+	const blob = b64toBlob(dataUrl, "image/png");
+	const fileName = id + "-" + "vapor_plane.png";
+	const file = blobToFile(blob, fileName);
+
+
+
+	try {
+		const serial = "test"
+		const addedFile = await client.add(file)
+		const imageUrl = `https://ipfs.infura.io/ipfs/${addedFile.path}`
+		let attArr = []
+		// console.log('URL HOMIE', url)
+		// const attributes = {image: iamgeUrl, ...nftAttributes}
+		for (const [key, value] of Object.entries(nftAttributes)) {
+			attArr.push({
+				trait_type: key,
+				value: value
+			})
+		}
+		let metaData = {
+			description: "",
+			external_url: "https://ps37.space/vaporplanes",
+			image: imageUrl,
+			attributes: attArr,
+			name: `Vapor Plane #${serial}`
+
+		}
+
+		const addedMetaData = await client.add(JSON.stringify(metaData))
+		const metaURI = `https://ipfs.infura.io/ipfs/${addedMetaData.path}`
+		console.log('meta data', metaURI)
+	}
+	catch (err) {
+		console.log('SAVE ERROR', err)
+	}
+
+
+	setInfo(true)
+	console.log(dataUrl)
+ }
+
+
+
 
   return (
     <div id='canvas-parent' className="future vaporplanes">
