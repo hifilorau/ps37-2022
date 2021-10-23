@@ -1,11 +1,11 @@
 import React, {useState, useEffect} from 'react'
 
 import Sketch from 'react-p5'
-import logo1 from '../../images/key_purp_open.png'
-import logo2 from '../../images/pyramid_purp.png'
-import logo3 from '../../images/key_purp_outline.png'
-import logo4 from '../../images/key_solid_purp.png'
-import logo5 from '../../images/pyramid_outline_purp.png'
+import logo1 from '../../images/logo-08.svg'
+import logo2 from '../../images/logo-09.svg'
+import logo5 from '../../images/logo-12.svg'
+import logo6 from '../../images/logo-13.svg'
+import logo7 from '../../images/logo-14.svg'
 import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
 import GridLoader from 'react-spinners/GridLoader'
@@ -40,6 +40,8 @@ let img2;
 let img3;
 let img4;
 let img5;
+let img6;
+let img7;
 let images = [];
 let width;
 // let width = 3840;
@@ -85,12 +87,12 @@ useEffect(() => {
   const preload = (p5) => {
     img1 = p5.loadImage(logo1);
     img2 = p5.loadImage(logo2);
-    img3 = p5.loadImage(logo3);
-    img4 = p5.loadImage(logo4);
     img5 = p5.loadImage(logo5);
+		img6 = p5.loadImage(logo6);
+		img7 = p5.loadImage(logo7);
     // img5 = null;
   
-    images = [img1, img2, img3, img4, img5];
+    images = [img1, img2, img5, img6, img7];
     img = images[Math.floor(p5.random(images.length))];
 
   }
@@ -102,7 +104,7 @@ useEffect(() => {
     p5.angleMode(p5.DEGREES)
 	  p5.imageMode(p5.CENTER);
     p5.rectMode(p5.CENTER)
-    // p5.pixelDensity(3)
+    p5.pixelDensity(2)
 		gridLake = false;
 		p5.colorMode(p5.HSB, 360, 100, 100, 100);
 		// p5.perspective(90, width/height, -10000, 0)
@@ -185,11 +187,17 @@ useEffect(() => {
 
 		displayMoons(p5)
 		// displayMtns();
-		imageDecisions(p5, img)
+		
 		displayMtns(p5);
 		//error card iterator
 		// p5.rotateX(-87)
 		iterator(50, p5)
+		p5.push()
+		if (realityCheck(50, p5) && attributes.inverted) {
+			p5.rotateX(180)
+		}
+		imageDecisions(p5, img)
+		p5.pop()
 		// iterator(p5)
 		p5.pop()
 	// pop()
@@ -283,11 +291,12 @@ function getX(i, p5) {
 
 
 function imageDecisions(p5, img) {
-	if (realityCheck(85, p5)) {
-		if (realityCheck(95, p5)) {
+	
+	if (realityCheck(85, p5)) { //no image
+		if (realityCheck(90, p5)) { // stdrd image
 			return p5.image(img, 0, -img.height/2)
 			} 
-			else {
+			else { // anwhere image
 				return p5.image(img, p5.random(width/2), -img.height/2)
 			}
 	} 
