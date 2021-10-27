@@ -6,15 +6,21 @@ import logo2 from '../../images/logo-09.svg'
 import logo5 from '../../images/logo-12.svg'
 import logo6 from '../../images/logo-13.svg'
 import logo7 from '../../images/logo-14.svg'
+import Bolt from './Bolt.js'
 import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
 import GridLoader from 'react-spinners/GridLoader'
 import { Web3ReactProvider, useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import { create } from 'ipfs-http-client'
 import '../Future/future.css'
+import { connectWallet, getCurrentWalletConnected, mintNFT } from "../../utils/interact.js"
 
 const client = create('https://ipfs.infura.io:5001/api/v0')
 const contractAddress = "0x90fa9714C8e7961F8D703A0a7085D5F29F269c23"
+
+
+
+
 const VaporPlanes = () => {
 const context = useWeb3React()
 const { connector, library, chainId, account, activate, deactivate, active, error } = context
@@ -28,7 +34,11 @@ const [nftAttributes, setNftAttributes] = useState({})
 const [fileUrl, updateFileUrl] = useState(``)
 const [customSave, setCustomSave] = useState(null)
 const [info, setInfo] = useState(false)
-
+const [walletAddress, setWallet] = useState("");
+const [status, setStatus] = useState("");
+const [name, setName] = useState("");
+const [description, setDescription] = useState("");
+const [url, setURL] = useState("");
 
 ///INITIALIZE VARIABLES
 var hLine;
@@ -52,6 +62,7 @@ let img4;
 let img5;
 let img6;
 let img7;
+
 let images = [];
 let width;
 // let width = 3840;
@@ -61,25 +72,33 @@ let height;
 //need polar and black scheme
 let THEME_ARRAY = [
 	///Lavendar Plane
-	["#BEFCFF", "#DEFFFA", "#FFDAF5", "#B0E1FF","#E6C6FF" ], 
+	["#BEFCFF", "#DEFFFA", "#FFDAF5", "#B0E1FF","#E6C6FF" ], /// Roz Vonos (pink mountain)
 	//MIDNIGHT BLUE PLANE
 	["#fb321a", "#ff911a", "#e100f5", "#450eff", "#21006f"], 
 
-	["#06f984", "#fde802", "#ffd11a", "#fc5d02", "#ff00f9"], 
+	["#06f984", "#fde802", "#ffd11a", "#fc5d02", "#ff00f9"], /// Mercury's Horn
 
-	["#aafec6", "#42fe90", "#00d98a", "#018c77", "#02515d"],
+	["#aafec6", "#42fe90", "#00d98a", "#018c77", "#02515d"],  /// C.R.E.A.M
 
-	["#FFDAF5", "#DEFFFA", "#FFDAF5", "#B0E1FF","#fff" ],
+	["#FFDAF5", "#DEFFFA", "#FFDAF5", "#B0E1FF","#fff" ],  /// Polaris 
 	//black theme
-	["#d84800", "#f07800", "#483018", "#f07800","#000" ],
+	["#d84800", "#f07800", "#483018", "#f07800","#000" ],   /// Birth of Hendrix 
 		//BLAVENDAR
-	["#6e0d60", "#DEFFFA", "#972688", "#B0E1FF","#000" ],
+	["#6e0d60", "#DEFFFA", "#972688", "#B0E1FF","#000" ], /// Spacecraft Paradiso
 
 	///black theme
 
 	///yellow theme
-	["#c75001", "#d43acc", "#de689f", "#e79771","#fbf017", "#f1c344"]
+	["#c75001", "#d43acc", "#de689f", "#e79771","#fbf017", "#f1c344"],  ///Doja's Delight
+
+	['#688141', "#C48A4D", "#df9875", "#2F596F", "#A1819B"],  ///Circundum Cage
+
+
+	['#fffd00', '#ff0000', '#fad300', '#cb0900', '#fff700']  /// the Plane of the Eternal Flame
 ]
+
+
+
 
 const override = `
 display: block;
@@ -87,14 +106,15 @@ margin: 0 auto;
 border-color: red;
 `;
 
-useEffect(() => {
-	if (activatingConnector && activatingConnector === connector) {
-		setActivatingConnector(undefined)
-	}
-}, [activatingConnector, connector])
+useEffect( async () => {
+		const {address, status} = await getCurrentWalletConnected();
+    setWallet(address)
+    setStatus(status); 
+		addWalletListener();
+}, [])
 
 
-  const preload = (p5) => {
+  const preload = async (p5) => {
     img1 = p5.loadImage(logo1);
     img2 = p5.loadImage(logo2);
     img5 = p5.loadImage(logo5);
@@ -104,10 +124,12 @@ useEffect(() => {
   
     images = [img1, img2, img5, img6, img7];
     img = images[Math.floor(p5.random(images.length))];
+		console.log('IMGAGE PL', img)
 
   }
 
   const setup = (p5, canvasParentRef) => {
+		console.log('IMAGES', img1)
 		height=1080;
 		width=1920;
     p5.createCanvas(width, height, p5.WEBGL).parent(canvasParentRef)
@@ -118,7 +140,7 @@ useEffect(() => {
 		gridLake = false;
 		p5.colorMode(p5.HSB, 360, 100, 100, 100);
 		// p5.perspective(90, width/height, -10000, 0)
-	
+
     
 	//theming
 	const themeIndex = Math.floor(p5.random(THEME_ARRAY.length))
@@ -156,11 +178,12 @@ useEffect(() => {
 
 	// for scaling logo
 	// p5.rotateY(180)
+	console.log('IMGAE BRAVE', img)
 	img.resize(0, height/6) 
 	p5.background(skyColor);
 	customDraw(p5, img)
 
-	setCustomSave(canvasParentRef)
+	// setCustomSave(canvasParentRef)
 	// const thePlane = p5.get()
 
 	// thePlane.save()
@@ -179,7 +202,15 @@ useEffect(() => {
 
 
 		p5.push()
+
 		newSky(p5)
+
+
+		// p5.rotateZ(-90)
+		// p5.arc(0, 0, 650, 650, p5.PI, 0);
+
+    // p5.fill()
+
 		if (realityCheck(25, p5)) {
 			console.log('FLIING')
 			attributes.inverted = true;
@@ -206,6 +237,7 @@ useEffect(() => {
 		// p5.rotateX(-87)
 		iterator(50, p5)
 		p5.push()
+
 		if (realityCheck(50, p5) && attributes.inverted) {
 			p5.rotateX(180)
 		}
@@ -230,10 +262,11 @@ useEffect(() => {
 		if (realityCheck(10, p5)) {
 			attributes.grid="horizontal"
 			p5.rotateX(89)
-			for (var x = 0; x < width * 1.3; x += gridSize*4) {
-				for (var y = 0; y < height * 1.3; y += gridSize * 4 ) {
+			p5.strokeWeight(.1)
+			for (var x = 0; x < width * 1.2; x += gridSize*4) {
+				for (var y = 0; y < height * 1.2; y += gridSize * 4 ) {
 	
-					p5.line(0-width * 1.3, y  , width * 1.3, y ) ;
+					p5.line(0-width * 1.3, y * p5.random(1,1.75) , width * 1.3, y * p5.random(1,1.75) ) ;
 					// p5.line(x-width/2, 0, x-width/2, height * 2);
 				}
 			}
@@ -247,7 +280,7 @@ useEffect(() => {
 			}
 			for (var x = 0; x < width * modifier; x += gridSize ) {
 				for (var y = 0; y < height; y += gridSize ) {
-	
+					
 					// p5.line(0-width/2, y * 2, width/2, y * 2  ) ;
 					p5.line(x-width, 0, x-width, height* 2);
 				}
@@ -472,6 +505,8 @@ function newSky(p5) {
 }
 
 
+
+
 const setThemeAttribute = (i) => {
 	if (i = 0) {
 		return "X"
@@ -520,51 +555,91 @@ const b64toBlob = (dataURI) => {
 
 
 const saveMe = async (p5) => {
-	console.log('save', nftAttributes)
-	const id = 1;
-	const canvas = document.querySelector('canvas')
-	const dataUrl = canvas.toDataURL("img/png");
-	const blob = b64toBlob(dataUrl, "image/png");
-	const fileName = id + "-" + "vapor_plane.png";
-	const file = blobToFile(blob, fileName);
+	// console.log('save', nftAttributes)
+	// const id = 1;
+	// const canvas = document.querySelector('canvas')
+	// const dataUrl = canvas.toDataURL("img/png");
+	// const blob = b64toBlob(dataUrl, "image/png");
+	// const fileName = id + "-" + "vapor_plane.png";
+	// const file = blobToFile(blob, fileName);
 
 
 
-	try {
-		const serial = "test"
-		const addedFile = await client.add(file)
-		const imageUrl = `https://ipfs.infura.io/ipfs/${addedFile.path}`
-		let attArr = []
-		// console.log('URL HOMIE', url)
-		// const attributes = {image: iamgeUrl, ...nftAttributes}
-		for (const [key, value] of Object.entries(nftAttributes)) {
-			attArr.push({
-				trait_type: key,
-				value: value
-			})
-		}
-		let metaData = {
-			description: "",
-			external_url: "https://ps37.space/vaporplanes",
-			image: imageUrl,
-			attributes: attArr,
-			name: `Vapor Plane #${serial}`
+	// try {
+	// 	const serial = "test"
+	// 	const addedFile = await client.add(file)
+	// 	const imageUrl = `https://ipfs.infura.io/ipfs/${addedFile.path}`
 
-		}
+	// 	let attArr = []
+	// 	// console.log('URL HOMIE', url)
+	// 	// const attributes = {image: iamgeUrl, ...nftAttributes}
+	// 	for (const [key, value] of Object.entries(nftAttributes)) {
+	// 		attArr.push({
+	// 			trait_type: key,
+	// 			value: value
+	// 		})
+	// 	}
+	// 	let metaData = {
+	// 		description: "",
+	// 		external_url: "https://ps37.space/vaporplanes",
+	// 		image: imageUrl,
+	// 		attributes: attArr,
+	// 		name: `Vapor Plane #${serial}`
 
-		const addedMetaData = await client.add(JSON.stringify(metaData))
-		const metaURI = `https://ipfs.infura.io/ipfs/${addedMetaData.path}`
-		console.log('meta data', metaURI)
-	}
-	catch (err) {
-		console.log('SAVE ERROR', err)
-	}
+	// 	}
+
+	// 	const addedMetaData = await client.add(JSON.stringify(metaData))
+	// 	const metaURI = `https://ipfs.infura.io/ipfs/${addedMetaData.path}`
+	// 	console.log('meta data', metaURI)
+	// 	const { status } = await mintNFT(metaURI);
+	// 	console.log('STATUS', status)
+  //   setStatus(status);
+	// }
+	// catch (err) {
+	// 	console.log('SAVE ERROR', err)
+	// }
 
 
 	setInfo(true)
-	console.log(dataUrl)
+	// console.log(dataUrl)
  }
 
+
+ //// wallet connect stuff
+
+ const connectWalletPressed = async () => { //TODO: implement
+	const walletResponse = await connectWallet();
+    setStatus(walletResponse.status);
+    setWallet(walletResponse.address);
+ };
+ const onMintPressed = async () => { //TODO: implement
+ };
+
+
+const addWalletListener = () => {
+  if (window.ethereum) {
+    window.ethereum.on("accountsChanged", (accounts) => {
+      if (accounts.length > 0) {
+        setWallet(accounts[0]);
+        setStatus("👆🏽 Write a message in the text-field above.");
+      } else {
+        setWallet("");
+        setStatus("🦊 Connect to Metamask using the top right button.");
+      }
+    });
+  } else {
+    setStatus(
+      <p>
+        {" "}
+        🦊{" "}
+        <a target="_blank" href={`https://metamask.io/download.html`}>
+          You must install Metamask, a virtual Ethereum wallet, in your
+          browser.
+        </a>
+      </p>
+    );
+  }
+}
 
 
 
@@ -588,11 +663,25 @@ const saveMe = async (p5) => {
 					<Link to="/"> 
          		<div className="vaporlink-img"><img src={logo} /></div>
       		</Link>
-			</div>
+				</div>
+				<div id="walletButton" onClick={connectWalletPressed}>
+					<h3>
+					{walletAddress.length > 0 ? (
+						"Connected: " +
+						String(walletAddress).substring(0, 6) +
+						"..." +
+						String(walletAddress).substring(38)
+					) : (
+						<span>Connect Wallet</span>
+					)}
+					</h3>
+				</div>
       </div>
 			{info && <div className="nft-fo">
 				<div className="close" onClick={() => setInfo(false)}>X</div>
-				<p>Each vapor plane is randomly generated. There are billions of possible and unpredictable combinaations. The idea is that a user can create as many new planes as they like and once they find one that they like they can mint it as an NFT. The final collection will be the 1200 that users have decided to mint. Each NFT minted will also be serialized. Holders of vapor planes will be eligible for a variety of benefits related to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise and physical art.</p>
+				<p>Each vapor plane is randomly generated using p5.js. There are billions of possible and unpredictable combinaations. The idea of this collection is two fold. 1. the final collection is chosen by the art which the users choose to mint. Users can create as many new planes as they like and once they find one that they like they can mint it as an NFT if they choose. 2. Purchase of NFTs will both provide additional utility and support for PS37 moving forward.</p>
+					
+				<p> Vapor Plane NFTs will provide additional benefits and access to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise and physical art, and discounts on event tickets and space rental.</p>
 			</div> }
     </div>
   )

@@ -2,6 +2,8 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
 //Contract based on [https://docs.openzeppelin.com/contracts/3.x/erc721](https://docs.openzeppelin.com/contracts/3.x/erc721)
 // SPDX-License-Identifier: MIT
@@ -33,8 +35,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 // }
 
 
-contract VaporPlanes is ERC721Enumerable, Ownable {
+contract VaporPlanes is ERC721URIStorage, Ownable {
     using Strings for uint256;
+    using Counters for Counters.Counter;
+    Counters.Counter private _tokenIds;
 
     uint256 public constant COST_ONE = 0.05 ether;
     // uint256 public constant COST_FIVE = 0.04 ether;
@@ -59,7 +63,7 @@ contract VaporPlanes is ERC721Enumerable, Ownable {
     uint256 public totalPublicSupply;
 
     string private _contractURI;
-    string private _baseTokenURI = "https://chillblocks.com/";
+    string private _baseTokenURI;
     mapping(address => uint256) private _claimed;
     mapping(address => bool) private _whitelist;
     mapping(address => uint256) private _whitelistClaimed;
@@ -67,7 +71,7 @@ contract VaporPlanes is ERC721Enumerable, Ownable {
     constructor(
         // string memory __baseURI,
         // string memory __contractURI
-    ) ERC721("VaporPlanes", "VAPORPLANES") {
+    ) ERC721("VaporPlanes", "VPLN") {
         // setBaseURI(__baseURI);
         // setContractURI(__contractURI);
     }
@@ -103,16 +107,16 @@ contract VaporPlanes is ERC721Enumerable, Ownable {
         return _claimed[owner];
     }
 
-    function freeMint() external payable {
-        require(isFreeActive, "Free minting is not active");
-        require(_claimed[msg.sender] == 0, "Free token already claimed");
-        require(totalSupply() < MAX_SUPPLY, "All tokens minted");
-        require(totalPublicSupply < MAX_PUBLIC_SUPPLY, "Over max public limit");
+    // function freeMint() external payable {
+    //     require(isFreeActive, "Free minting is not active");
+    //     require(_claimed[msg.sender] == 0, "Free token already claimed");
+    //     require(totalSupply() < MAX_SUPPLY, "All tokens minted");
+    //     require(totalPublicSupply < MAX_PUBLIC_SUPPLY, "Over max public limit");
 
-        totalPublicSupply += 1;
-        _claimed[msg.sender] += 1;
-        _safeMint(msg.sender, MAX_PRIVATE_SUPPLY + totalPublicSupply);
-    }
+    //     totalPublicSupply += 1;
+    //     _claimed[msg.sender] += 1;
+    //     _safeMint(msg.sender, MAX_PRIVATE_SUPPLY + totalPublicSupply);
+    // }
 
     function getCost(uint256 num) public pure returns (uint256) {
         // if (num < 5) {
@@ -124,7 +128,7 @@ contract VaporPlanes is ERC721Enumerable, Ownable {
     }
 
     function gift(address to, uint256 num) external onlyOwner {
-        require(totalSupply() < MAX_SUPPLY + 1, "All tokens minted");
+        require(totalPublicSupply < MAX_SUPPLY + 1, "All tokens minted");
         require(
             totalPrivateSupply + num < MAX_PRIVATE_SUPPLY + 1,
             "Exceeds private supply"
@@ -136,19 +140,23 @@ contract VaporPlanes is ERC721Enumerable, Ownable {
         }
     }
 
-    function mint(uint256 num) external payable {
+    function mint(address recipient, string memory tokenURI) external payable returns (uint256){
+    
         require(isActive, "Contract is inactive");
-        require(num < MAX_MINT + 1, "Over max limit");
-        require(totalSupply() < MAX_SUPPLY, "All tokens minted");
+        // require(num < MAX_MINT + 1, "Over max limit");
+        require(totalPublicSupply < MAX_SUPPLY, "All tokens minted");
         require(totalPublicSupply < MAX_PUBLIC_SUPPLY, "Over max public limit");
-        require(msg.value >= getCost(num), "ETH sent is not correct");
-
-        for (uint256 i; i < num; i++) {
+        require(msg.value >= getCost(1), "ETH sent is not correct");
+        _tokenIds.increment();
+        uint256 newItemId = _tokenIds.current();
+        // for (uint256 i; i < num; i++) {
             if (totalPublicSupply < MAX_PUBLIC_SUPPLY) {
                 totalPublicSupply += 1;
-                _safeMint(msg.sender, MAX_PRIVATE_SUPPLY + totalPublicSupply);
+                 _mint(recipient, newItemId);
+                 _setTokenURI(newItemId, tokenURI);
             }
-        }
+        // }
+        return newItemId;
     }
 
     function isOnWhitelist(address addr) external view returns (bool) {
@@ -211,7 +219,7 @@ contract VaporPlanes is ERC721Enumerable, Ownable {
             _whitelistClaimed[msg.sender] + num < whitelistMaxMint + 1,
             "Whitelist tokens already claimed"
         );
-        require(totalSupply() < MAX_SUPPLY, "All tokens minted");
+        require(totalPublicSupply < MAX_SUPPLY, "All tokens minted");
         require(totalPublicSupply < MAX_PUBLIC_SUPPLY, "Over max public limit");
         require(whitelistCost * num <= msg.value, "ETH amount is not correct");
 

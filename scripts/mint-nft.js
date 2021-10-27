@@ -7,4 +7,3 @@ console.log(JSON.stringify(contract.abi))
 
 const contractAddress = "0x90fa9714C8e7961F8D703A0a7085D5F29F269c23"
 
-const nftContract = new web3.eth.Contract(contract.abi, contractAddress)
