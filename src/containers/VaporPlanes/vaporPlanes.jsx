@@ -737,7 +737,7 @@ const addWalletListener = () => {
 				<div className="close" onClick={() => setInfo(false)}>X</div>
 				<p>Each vapor plane is randomly generated using p5.js. There are billions of possible and unpredictable combinaations. The idea of this collection is two fold. 1. the final collection is chosen by the art which the users choose to mint. Users can create as many new planes as they like and once they find one that they like they can mint it as an NFT if they choose. 2. Purchase of NFTs will both provide additional utility and support for PS37 moving forward.</p>
 					
-				<p> Vapor Plane NFTs will provide additional benefits and access to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise and physical art, and discounts on event tickets and space rental.</p>
+				<p> Vapor Plane NFTs will provide additional benefits and access to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise, art prints, and discounts on event tickets and space rental.</p>
 			</div> }
 			{info && <MetaInfo meta={nftAttributes} />
 

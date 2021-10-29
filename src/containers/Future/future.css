@@ -59,7 +59,8 @@
 }
 
 .meta-fo {
-  top: 75%;
+  top: auto;
+  bottom: 10px;
   right: 0;
 }
 
@@ -81,8 +82,10 @@
 
 
 .vapor-link .vp-social {
-  width: 25px;
+  width: 20px;
   align-self: center;
+  position: relative;
+  top: 3px;
 
 }
 
