@@ -9,6 +9,7 @@ import Footer from './components/footer.jsx'
 import VaporPlanes from './containers/VaporPlanes/vaporPlanes.jsx'
 import { Web3ReactProvider } from '@web3-react/core'
 import { Web3Provider } from '@ethersproject/providers'
+import Art from './containers/Art/art.jsx'
 
 import {
   BrowserRouter as Router,
@@ -39,6 +40,9 @@ const App = () => {
             </Route>
             <Route path="/vaporplanes">
               <VaporPlanes />
+            </Route>
+            <Route path="/art">
+              <Art />
             </Route>
             <Route path="/">
               <Home />
