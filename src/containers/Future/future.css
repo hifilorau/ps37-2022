@@ -59,7 +59,8 @@
 }
 
 .meta-fo {
-  top: 80%;
+  top: 75%;
+  right: 0;
 }
 
 .close {
@@ -74,16 +75,27 @@
   background: rgba(0,0,0, .5);
   cursor: pointer;
   transition: .5s;
+  display: flex;
+  justify-content: space-around;
 }
 
-.vapor-link a {
-  width: 100%;
+
+.vapor-link .vp-social {
+  width: 25px;
+  align-self: center;
+
 }
 
 .vaporlink-img {
-  width: 70px;
+  width: 60px;
   height: auto;
   margin: 0 auto;
+  padding: .25em;
+}
+
+.vaporlink-img img {
+  position: relative;
+  top: 3px;
 }
 
 .sketch-wrapper {

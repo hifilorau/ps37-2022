@@ -8,6 +8,7 @@ import logo6 from '../../images/logo-13.svg'
 import logo7 from '../../images/logo-14.svg'
 import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
+import igLogo from '../../images/ig_logo.png'
 import GridLoader from 'react-spinners/GridLoader'
 import { Web3ReactProvider, useWeb3React, UnsupportedChainIdError } from '@web3-react/core'
 import { create } from 'ipfs-http-client'
@@ -710,11 +711,6 @@ const addWalletListener = () => {
       <div className="vp-content">
         <h3 onClick={resetFrame}>Create New Plane</h3>
 				<h3 onClick={(e, p5) => saveMe(e, p5)}> Information</h3>
-				<div className="vapor-link">
-					<Link to="/"> 
-         		<div className="vaporlink-img"><img src={logo} /></div>
-      		</Link>
-				</div>
 				<div id="walletButton" onClick={connectWalletPressed}>
 					<h3>
 					{walletAddress.length > 0 ? (
@@ -727,6 +723,15 @@ const addWalletListener = () => {
 					)}
 					</h3>
 				</div>
+				<div className="vapor-link">
+					<Link to="/"> 
+         		<div className="vaporlink-img"><img src={logo} /></div>
+      		</Link>
+					<a href="https://instagram.com/ps37durham/?hl=en" target="_blank" className="vp-social">
+						<img src={igLogo} />
+						 </a>
+				</div>
+				
       </div>
 			{info && <div className="nft-fo">
 				<div className="close" onClick={() => setInfo(false)}>X</div>
