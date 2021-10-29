@@ -85,7 +85,7 @@ z-index: -1
 
 .logo-landing {
   opacity: 1;
-  max-width: 68%;
+  max-width: 100%;
   margin-bottom: 1em;
 }
 
@@ -99,7 +99,7 @@ z-index: -1
 
 
 .landing-content-container {
-  max-width: 900px;
+  max-width: 500px;
   margin: 0 auto;
   position: relative;
   height: 100%;

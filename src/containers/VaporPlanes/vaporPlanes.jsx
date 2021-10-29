@@ -14,6 +14,7 @@ import { Web3ReactProvider, useWeb3React, UnsupportedChainIdError } from '@web3-
 import { create } from 'ipfs-http-client'
 import '../Future/future.css'
 import { connectWallet, getCurrentWalletConnected, mintNFT } from "../../utils/interact.js"
+import MetaInfo from './Meta.js'
 
 const client = create('https://ipfs.infura.io:5001/api/v0')
 const contractAddress = "0x90fa9714C8e7961F8D703A0a7085D5F29F269c23"
@@ -22,9 +23,9 @@ const contractAddress = "0x90fa9714C8e7961F8D703A0a7085D5F29F269c23"
 
 
 const VaporPlanes = () => {
-const context = useWeb3React()
-const { connector, library, chainId, account, activate, deactivate, active, error } = context
-//  const [gridLake, setGridLake] = useState(false)
+// const context = useWeb3React()
+// const { connector, library, chainId, account, activate, deactivate, active, error } = context
+// //  const [gridLake, setGridLake] = useState(false)
 
 
 
@@ -39,6 +40,7 @@ const [status, setStatus] = useState("");
 const [name, setName] = useState("");
 const [description, setDescription] = useState("");
 const [url, setURL] = useState("");
+const [metaInfo, setMetaInfo] = useState(true)
 
 ///INITIALIZE VARIABLES
 var hLine;
@@ -62,7 +64,7 @@ let img4;
 let img5;
 let img6;
 let img7;
-
+let testImage;
 let images = [];
 let width;
 // let width = 3840;
@@ -98,6 +100,40 @@ let THEME_ARRAY = [
 ]
 
 
+const setThemeAttribute = (i) => {
+	console.log('set theme', i)
+	if (i == 0) {
+		return "Roz Vonos"
+	}
+	if (i == 1) {
+		return "Midnight in Eden"
+	}
+	if (i == 2) {
+		return "Mercury's Horn"
+	}
+	if (i == 3) {
+		return "C.R.E.A.M."
+	}
+	if (i == 4) {
+		return "Polaris"
+	}
+	if (i == 5) {
+		return "Birth of Hendrix"
+	}
+	if (i == 6) {
+		return "Spacecraft Paradiso"
+	}
+	if (i == 7) {
+		return "Doja's Delight"
+	}
+	if (i == 8) {
+		return "The Silent Cage"
+	}
+	if (i == 9) {
+		return "Plane of the Eternal Flame"
+	}
+}
+
 
 
 const override = `
@@ -114,22 +150,27 @@ useEffect( async () => {
 }, [])
 
 
-  const preload = async (p5) => {
-    img1 = p5.loadImage(logo1);
+  const preload = (p5) => {
+		console.log('PRE LOAD', logo1)
+   	img1 = p5.loadImage(logo1)
     img2 = p5.loadImage(logo2);
     img5 = p5.loadImage(logo5);
 		img6 = p5.loadImage(logo6);
 		img7 = p5.loadImage(logo7);
+
     // img5 = null;
-  
+    console.log('pload 2img', img1)
     images = [img1, img2, img5, img6, img7];
     img = images[Math.floor(p5.random(images.length))];
+		img = img5
 		console.log('IMGAGE PL', img)
 
   }
 
   const setup = (p5, canvasParentRef) => {
-		console.log('IMAGES', img1)
+		p5.loadImage(logo1, (img) => {
+			testImage=img;
+		});
 		height=1080;
 		width=1920;
     p5.createCanvas(width, height, p5.WEBGL).parent(canvasParentRef)
@@ -144,7 +185,9 @@ useEffect( async () => {
     
 	//theming
 	const themeIndex = Math.floor(p5.random(THEME_ARRAY.length))
-	attributes.theme = setThemeAttribute(themeIndex);
+  const thisTheme = setThemeAttribute(themeIndex);
+	console.log('this theme', thisTheme)
+	attributes.theme = thisTheme
   const theme = THEME_ARRAY[themeIndex]
   const skyIndex = Math.floor(p5.random(theme.length))
 	skyColor = theme[skyIndex]
@@ -178,24 +221,30 @@ useEffect( async () => {
 
 	// for scaling logo
 	// p5.rotateY(180)
-	console.log('IMGAE BRAVE', img)
-	img.resize(0, height/6) 
+	// img.resize(0, height/6) 
 	p5.background(skyColor);
-	customDraw(p5, img)
+	
+
+
+
+	// customDraw(p5, img)
 
 	// setCustomSave(canvasParentRef)
 	// const thePlane = p5.get()
 
 	// thePlane.save()
-	console.log('ATTRIBUTES', attributes)
+	p5.noLoop()
   }
 
-	const draw = (p5) => {
-		// customDraw(p5, img)
+	const draw = (p5, testImage) => {
+	console.log('TESTIMAGE', testImage)
+			customDraw(p5, img)
+		
 	}
 
 	const  customDraw = (p5, img) => {
-
+ 
+		console.log('NEW IMAGE STUFF', img1)
 		// p5.push()
 		// p5.translate(0,0,-10)
 
@@ -241,11 +290,12 @@ useEffect( async () => {
 		if (realityCheck(50, p5) && attributes.inverted) {
 			p5.rotateX(180)
 		}
-		imageDecisions(p5, img)
+		imageDecisions(p5)
 		p5.pop()
 		// iterator(p5)
 		p5.pop()
 		setNftAttributes(attributes)
+		console.log('FINAL ATTRI', attributes)
 	// pop()
 	}
   
@@ -337,10 +387,10 @@ function getX(i, p5) {
 }
 
 
-function imageDecisions(p5, img) {
-	
-	if (realityCheck(85, p5)) { //no image
-		if (realityCheck(90, p5)) { // stdrd image
+function imageDecisions(p5) {
+	console.log('IMAGE DECISIONS', img)
+	if (realityCheck(50, p5)) { //no image
+		if (realityCheck(75, p5)) { // stdrd image
 			return p5.image(img, 0, -img.height/2)
 			} 
 			else { // anwhere image
@@ -507,32 +557,7 @@ function newSky(p5) {
 
 
 
-const setThemeAttribute = (i) => {
-	if (i = 0) {
-		return "X"
-	}
-	if (i = 1) {
-		return "Y"
-	}
-	if (i = 2) {
-		return "Z"
-	}
-	if (i = 3) {
-		return "XY"
-	}
-	if (i = 4) {
-		return "ZX"
-	}
-	if (i = 5) {
-		return "ZX"
-	}
-	if (i = 6) {
-		return "ZX"
-	}
-	if (i = 7) {
-		return "ZX"
-	}
-}
+
 
 
 //// SAVE STUFF
@@ -646,7 +671,7 @@ const addWalletListener = () => {
   return (
     <div id='canvas-parent' className="future vaporplanes">
      <div className="sketch-wrapper">
-			<Sketch setup={setup}  preload={preload} keyPressed={keyPressed} draw={draw}/>
+			<Sketch setup={(...args) => setup(...args)}  preload={(...args) => preload(...args)} keyPressed={(...args) => keyPressed(...args)} draw={(p5, img) => draw(p5, img)}/>
 		 </div>
 		 <div className="vapor-loading">
 		 	<GridLoader color={'#6e0d60'} isLoading={true}
@@ -683,6 +708,9 @@ const addWalletListener = () => {
 					
 				<p> Vapor Plane NFTs will provide additional benefits and access to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise and physical art, and discounts on event tickets and space rental.</p>
 			</div> }
+			{info && <MetaInfo meta={nftAttributes} />
+
+			}
     </div>
   )
 }

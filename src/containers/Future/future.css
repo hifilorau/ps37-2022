@@ -58,6 +58,10 @@
   padding: 1em;
 }
 
+.meta-fo {
+  top: 80%;
+}
+
 .close {
   position: absolute;
   z-index: 10;
@@ -116,5 +120,14 @@
   /* object-fit: contain;
   max-height: 100%;
   max-width: 100%; */
+}
+
+.meta-item {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.meta-label {
+  width: 70px;
 }
 

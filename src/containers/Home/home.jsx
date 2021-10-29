@@ -1,7 +1,7 @@
 import React from 'react'
 import Video from '../../images/ps37-v2-comp-nl.mp4';
 import Poster from '../../images/ps37-moon-shot.png'
-import Logo from "../../images/ps37-key-05.png"
+import Logo from "../../images/logo-13.svg"
 import Footer from '../../components/footer.jsx'
 import {Link} from 'react-router-dom'
 
