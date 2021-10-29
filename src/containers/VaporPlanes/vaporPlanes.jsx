@@ -683,7 +683,7 @@ const addWalletListener = () => {
 			 </div> 
       <div className="vp-content">
         <h3 onClick={resetFrame}>Create New Plane</h3>
-				<h3 onClick={(e, p5) => saveMe(e, p5)}> Mint as NFT (coming soon)</h3>
+				<h3 onClick={(e, p5) => saveMe(e, p5)}> Information</h3>
 				<div className="vapor-link">
 					<Link to="/"> 
          		<div className="vaporlink-img"><img src={logo} /></div>
