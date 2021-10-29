@@ -13,6 +13,18 @@ const MetaInfo = ({meta}) => {
         <div className="meta-label">Logo:</div>
         <div className="meta-value">{meta.logo}</div>
       </div> }
+      {meta.sky && <div className="meta-item">
+        <div className="meta-label">Sky:</div>
+        <div className="meta-value">{meta.sky}</div>
+      </div> }
+      {meta.grid && <div className="meta-item">
+        <div className="meta-label">Grid:</div>
+        <div className="meta-value">{meta.grid}</div>
+      </div> }
+      {meta.inverted && <div className="meta-item">
+        <div className="meta-label">Inverted:</div>
+        <div className="meta-value">{meta.inverted ? "true" : null}</div>
+      </div> }
       <div className="meta-item">
         <div className="meta-label">Moons:</div>
         <div className="meta-value">{meta.moons}</div>

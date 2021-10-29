@@ -114,16 +114,16 @@ const setThemeAttribute = (i) => {
 		return "Midnight in Eden"
 	}
 	if (i == 2) {
-		return "Mercury's Horn"
+		return "Kid's Amnesia"
 	}
 	if (i == 3) {
 		return "C.R.E.A.M."
 	}
 	if (i == 4) {
-		return "Polaris"
+		return "Mogwai Polaris"
 	}
 	if (i == 5) {
-		return "Birth of Hendrix"
+		return "Imaginarium Hendrix"
 	}
 	if (i == 6) {
 		return "Spacecraft Paradiso"
@@ -132,7 +132,7 @@ const setThemeAttribute = (i) => {
 		return "Doja's Delight"
 	}
 	if (i == 8) {
-		return "The Silent Cage"
+		return "Cage's Silence"
 	}
 	if (i == 9) {
 		return "Plane of the Eternal Flame"
