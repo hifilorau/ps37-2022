@@ -1,12 +1,11 @@
 import React, {useState, useEffect} from 'react'
 
 import Sketch from 'react-p5'
-import logo1 from '../../images/logo-08.svg'
+import logo1 from '../../images/palms_main.svg'
 import logo2 from '../../images/logo-09.svg'
 import logo5 from '../../images/logo-12.svg'
 import logo6 from '../../images/logo-13.svg'
 import logo7 from '../../images/logo-14.svg'
-import Bolt from './Bolt.js'
 import {Link} from 'react-router-dom'
 import logo from '../../images/ps37-text-purp-09.png'
 import GridLoader from 'react-spinners/GridLoader'
@@ -66,6 +65,12 @@ let img6;
 let img7;
 let testImage;
 let images = [];
+let thisLogo;
+let thisImg;
+
+
+
+
 let width;
 // let width = 3840;
 // let width = 2160;
@@ -151,18 +156,20 @@ useEffect( async () => {
 
 
   const preload = (p5) => {
-		console.log('PRE LOAD', logo1)
-   	img1 = p5.loadImage(logo1)
-    img2 = p5.loadImage(logo2);
-    img5 = p5.loadImage(logo5);
-		img6 = p5.loadImage(logo6);
-		img7 = p5.loadImage(logo7);
+		// console.log('PRE LOAD', logo1)
+   	// img1 = p5.loadImage(logo1)
+    // img2 = p5.loadImage(logo2);
+    // img5 = p5.loadImage(logo5);
+		// img6 = p5.loadImage(logo6);
+		// img7 = p5.loadImage(logo7);
 
     // img5 = null;
-    console.log('pload 2img', img1)
-    images = [img1, img2, img5, img6, img7];
-    img = images[Math.floor(p5.random(images.length))];
-		img = img5
+    // console.log('pload 2img', img1)
+    // // images = [img1, img2, img5, img6, img7];
+		// images = [logo1, logo2, logo5, logo6, logo7];
+		// thisLogo = images[Math.floor(p5.random(images.length))];
+    // img = images[Math.floor(p5.random(images.length))];
+		// img = img5
 		console.log('IMGAGE PL', img)
 
   }
@@ -291,6 +298,7 @@ useEffect( async () => {
 			p5.rotateX(180)
 		}
 		imageDecisions(p5)
+
 		p5.pop()
 		// iterator(p5)
 		p5.pop()
@@ -388,16 +396,34 @@ function getX(i, p5) {
 
 
 function imageDecisions(p5) {
-	console.log('IMAGE DECISIONS', img)
-	if (realityCheck(50, p5)) { //no image
+	if (realityCheck(50, p5)) { //no
+		images = [logo1, logo5];
+		const imgIndex = Math.floor(p5.random(images.length))
+		thisLogo = images[imgIndex];
+		if (imgIndex == 0) {
+			attributes.logo = "Pyramid"
+		}
+		if (imgIndex == 1) {
+			attributes.logo = "Key Hole"
+		}
+		p5.loadImage(thisLogo, thisLogo => {imagePlacement(thisLogo, p5)});
+	} else return
+}
+
+const imagePlacement = (thisImg, p5) => {
+ //no image
 		if (realityCheck(75, p5)) { // stdrd image
-			return p5.image(img, 0, -img.height/2)
+			attributes.logoType = "Locked"
+			p5.image(thisImg, 0, -thisImg.height/2 + 27, 102, 94)
+			// console.log('img height', thisImg.height, 204, 190)
+
+			
 			} 
 			else { // anwhere image
-				return p5.image(img, p5.random(width/2), -img.height/2)
+				attributes.logoType = "Free"
+				p5.image(thisImg, p5.random(width/2), -thisImg.height/2 + 27, 102, 94)
+			
 			}
-	} 
-	else return;
 }
 
 function realityCheck(percent, p5) {
