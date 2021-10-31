@@ -1,10 +1,10 @@
 
+import '../Future/future.css'
 
-
-const MetaInfo = ({meta}) => {
+const MetaInfo = ({meta, info}) => {
   console.log('META', meta)
   return (
-    <div className="nft-fo meta-fo">
+    <div className={"nft-fo meta-fo"} className={info ? "nft-fo fade-in meta-fo" : "nft-fo meta-fo fade-out"}>
       <div className="meta-item">
         <div className="meta-label">Plane:</div>
         <div className="meta-value">{meta.theme}</div>

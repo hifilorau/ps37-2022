@@ -35,6 +35,7 @@ const [nftAttributes, setNftAttributes] = useState({})
 const [fileUrl, updateFileUrl] = useState(``)
 const [customSave, setCustomSave] = useState(null)
 const [info, setInfo] = useState(false)
+const [preFadeOut, setPreFadeOut] = useState(false)
 const [walletAddress, setWallet] = useState("");
 const [status, setStatus] = useState("");
 const [name, setName] = useState("");
@@ -693,6 +694,12 @@ const addWalletListener = () => {
   }
 }
 
+const fadeOut = () => {
+  // setPreFadeOut(true)
+	// setTimeout(() => {
+	// 	setInfo(false)
+	// }, 500)
+}
 
 
   return (
@@ -710,7 +717,8 @@ const addWalletListener = () => {
 			 </div> 
       <div className="vp-content">
         <h3 onClick={resetFrame}>Create New Plane</h3>
-				<h3 onClick={(e, p5) => saveMe(e, p5)}> Information</h3>
+				{/* <h3 onClick={(e, p5) => saveMe(e, p5)}> Information</h3> */}
+				<h3 onMouseOver={() => setInfo(true)}  onMouseOut={() => setInfo(false)}> Information</h3>
 				<div id="walletButton" onClick={connectWalletPressed}>
 					<h3>
 					{walletAddress.length > 0 ? (
@@ -733,15 +741,15 @@ const addWalletListener = () => {
 				</div>
 				
       </div>
-			{info && <div className="nft-fo">
-				<div className="close" onClick={() => setInfo(false)}>X</div>
+			<div className="nft-fo" className={info ? "nft-fo fade-in" : "nft-fo fade-out"}>
+				{/* <div className="close" onClick={() => setInfo(false)}>X</div> */}
 				<p>Each vapor plane is randomly generated using p5.js. There are billions of possible and unpredictable combinaations. The idea of this collection is two fold. 1. the final collection is chosen by the art which the users choose to mint. Users can create as many new planes as they like and once they find one that they like they can mint it as an NFT if they choose. 2. Purchase of NFTs will both provide additional utility and support for PS37 moving forward.</p>
 					
-				<p> Vapor Plane NFTs will provide additional benefits and access to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise, art prints, and discounts on event tickets and space rental.</p>
-			</div> }
-			{info && <MetaInfo meta={nftAttributes} />
+				<p> Vapor Plane NFTs will provide additional benefits and access to PS37 including future airdrops, NFT tickets to IRL or metaverse events, as well as merchandise, art printsgi, and discounts on event tickets and space rental.</p>
+			</div> 
+			<MetaInfo meta={nftAttributes} info={info} />
 
-			}
+			
     </div>
   )
 }
