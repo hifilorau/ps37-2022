@@ -42,6 +42,7 @@ const [name, setName] = useState("");
 const [description, setDescription] = useState("");
 const [url, setURL] = useState("");
 const [metaInfo, setMetaInfo] = useState(true)
+const [isLoading, setIsLoading] = useState(true)
 
 ///INITIALIZE VARIABLES
 var hLine;
@@ -306,6 +307,7 @@ useEffect( async () => {
 		p5.pop()
 		setNftAttributes(attributes)
 		console.log('FINAL ATTRI', attributes)
+		setIsLoading(false)
 	// pop()
 	}
   
@@ -707,14 +709,22 @@ const fadeOut = () => {
      <div className="sketch-wrapper">
 			<Sketch setup={(...args) => setup(...args)}  preload={(...args) => preload(...args)} keyPressed={(...args) => keyPressed(...args)} draw={(p5, img) => draw(p5, img)}/>
 		 </div>
-		 <div className="vapor-loading">
-		 	<GridLoader color={'#6e0d60'} isLoading={true}
-      	css={override} size={40} />
-			 	
-				 
-				 <h4>What took a god 7 days..</h4>
-			 	<p>creating new plane</p>
-			 </div> 
+		 
+		 {isLoading && 
+		 <div className="loading-screen-wrapper">
+			<div className="vapor-loading">
+				<GridLoader color={'#6e0d60'} isLoading={true}
+					css={override} size={40} />
+					
+					
+					<h4>What took a god 7 days..</h4>
+					<p>creating new plane</p>
+				</div>  
+			</div>
+			 
+			 }
+
+
       <div className="vp-content">
         <h3 onClick={resetFrame}>Create New Plane</h3>
 				{/* <h3 onClick={(e, p5) => saveMe(e, p5)}> Information</h3> */}
