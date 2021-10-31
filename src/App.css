@@ -101,7 +101,12 @@
   width: 100%;
   bottom: 0;
    
+}
 
+.block-footer {
+  display: block;
+  position: relative;
+  bottom: auto;
 }
 
 .footer-list {

@@ -35,7 +35,7 @@ const Art = () => {
         <p>Interested in the intersection of digital art, LED lights, and digital farming? Have other weird installation ideas? Need a space to make something bonkers? Hit us up <a  href="mailto:ps37durham@gmail.com">at ps37durham@gmail.com</a></p>
       </div>
       </div>
-      <Footer />
+      <Footer fixed={true}/>
     </div>
   ) 
 }

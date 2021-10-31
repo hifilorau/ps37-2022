@@ -1,9 +1,9 @@
 import {Link} from 'react-router-dom'
 import logo from '../images/ps37-text-purp-09.png'
 
-const Footer = () => {
+const Footer = ({fixed}) => {
   return (
-  <div className="footer">
+  <div className={!fixed ? "footer" : "footer block-footer"}>
     <ul className="footer-list">
       <li><Link to="/events">EVENTS</Link></li>
       <li>
