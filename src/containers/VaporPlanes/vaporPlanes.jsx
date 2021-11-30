@@ -45,7 +45,7 @@ const [metaInfo, setMetaInfo] = useState(true)
 const [isLoading, setIsLoading] = useState(true)
 
 ///INITIALIZE VARIABLES
-var hLine;
+let hLine;
 let attributes = {}
 let sun;
 let isSun;
@@ -143,7 +143,6 @@ const setThemeAttribute = (i) => {
 }
 
 
-
 const override = `
 display: block;
 margin: 0 auto;
@@ -158,24 +157,10 @@ useEffect( async () => {
 }, [])
 
 
-  const preload = (p5) => {
-		// console.log('PRE LOAD', logo1)
-   	// img1 = p5.loadImage(logo1)
-    // img2 = p5.loadImage(logo2);
-    // img5 = p5.loadImage(logo5);
-		// img6 = p5.loadImage(logo6);
-		// img7 = p5.loadImage(logo7);
+  // const preload = (p5) => {
 
-    // img5 = null;
-    // console.log('pload 2img', img1)
-    // // images = [img1, img2, img5, img6, img7];
-		// images = [logo1, logo2, logo5, logo6, logo7];
-		// thisLogo = images[Math.floor(p5.random(images.length))];
-    // img = images[Math.floor(p5.random(images.length))];
-		// img = img5
-		console.log('IMGAGE PL', img)
 
-  }
+  // }
 
   const setup = (p5, canvasParentRef) => {
 		p5.loadImage(logo1, (img) => {
@@ -205,7 +190,7 @@ useEffect( async () => {
 
 
 	/// set up for sun
-	if (realityCheck(80,p5)) {
+	if (realityCheck(80, p5)) {
 		isSun = true;
 		let sunIndex = Math.floor(p5.random(theme.length))
 		sunColor = theme[sunIndex]
