@@ -43,12 +43,11 @@ const Events = () => {
       console.log(error);
     });
   }
+
+
   
   useEffect(() => {
-
      getData();
-
-
  }, []);
 
   return (
@@ -60,7 +59,12 @@ const Events = () => {
     </div>
     <h1>Upcoming Events</h1>
       <div className="events-wrap">
-          {psEvents && psEvents.map(psEvent =>  <EventCard key={psEvent.id} psEvent={psEvent}/> )}
+          {psEvents && psEvents.map(psEvent => {
+            console.log(psEvent)
+            if (psEvent.fields.show) {
+            return (<EventCard key={psEvent.id} psEvent={psEvent}/>)
+            }
+             })}
       </div>
     </div>
     <Footer />
